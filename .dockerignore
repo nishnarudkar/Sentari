@@ -9,3 +9,5 @@ dashboard
 tests
 project.md
 node_modules
+.env
+.env.*
