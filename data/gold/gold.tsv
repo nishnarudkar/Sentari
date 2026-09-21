@@ -1,0 +1,95 @@
+aspect	label	trap	sentence
+guidance	positive	0	We are raising our full-year guidance and now expect revenue growth of 10% to 12%.
+guidance	positive	0	Given the strong start to the year, we are lifting our outlook for the remainder of 2025.
+guidance	positive	1	We now expect operating expenses to come in below the low end of our prior guidance.
+guidance	positive	0	Management reiterated its full-year guidance and pointed to upside from recent contract wins.
+guidance	positive	1	The updated outlook reflects a lower tax rate and reduced interest expense.
+guidance	positive	0	We are narrowing our guidance range upward to reflect the record backlog.
+guidance	negative	0	We are lowering our full-year guidance given weaker demand and tariff headwinds.
+guidance	negative	0	We now expect revenue growth at the low end of the range, and visibility beyond the third quarter is limited.
+guidance	negative	1	We are withdrawing our outlook until the uncertainty around the merger clears.
+guidance	negative	0	The company cut its forecast for the second half and no longer expects to hit its margin target.
+guidance	negative	1	We do not expect to meet our prior guidance for free cash flow this year.
+guidance	negative	0	Our outlook for the next few quarters has deteriorated as customers delay projects.
+guidance	neutral	0	The company will provide its full-year outlook at the investor day in November.
+guidance	neutral	0	We are maintaining our guidance and have nothing to update at this time.
+guidance	neutral	0	Guidance assumes an effective tax rate of 21% and a share count of 310 million.
+guidance	neutral	0	We do not provide quarterly guidance and will update our annual forecast in the fourth quarter.
+margins	positive	0	Gross margin expanded 180 basis points to 34.2% on favorable mix and productivity gains.
+margins	positive	1	Operating costs decreased 8% as a percentage of sales, lifting operating margin.
+margins	positive	1	We lowered our cost base and margins improved as a result.
+margins	positive	0	EBITDA margin reached a record 28% driven by operating leverage.
+margins	positive	1	Input costs fell during the quarter and pricing held firm, supporting profitability.
+margins	positive	0	Net margin improved to 14.1% on higher volumes and disciplined spending.
+margins	negative	0	Gross margin contracted 90 basis points as input cost inflation and tariffs weighed on profitability.
+margins	negative	1	Compute costs are rising faster than planned and we expect margin pressure over the next few quarters.
+margins	negative	1	Cost of revenue increased 14% year over year, outpacing sales growth.
+margins	negative	0	Operating margin declined as pricing did not fully offset higher costs.
+margins	negative	1	Tariffs added roughly 60 basis points of cost and squeezed margins.
+margins	negative	0	Profitability was hurt by unfavorable mix and one-time charges.
+margins	neutral	0	Operating margin was flat at 22.5% compared with the prior year.
+margins	neutral	0	Gross margin was 78% in the quarter, in line with our expectations.
+margins	neutral	0	We will disclose segment-level margins in the appendix to the presentation.
+margins	neutral	0	Margins were unchanged sequentially at 31%.
+demand	positive	0	Order backlog reached a record high and customer demand remains strong.
+demand	positive	0	Subscription revenue grew 28% and net revenue retention improved to 118%.
+demand	positive	0	Bookings accelerated in the quarter and our pipeline is at an all-time high.
+demand	positive	1	Customer churn decreased to its lowest level in three years.
+demand	positive	0	Demand for our AI products exceeded our expectations.
+demand	positive	1	Revenue beat the top end of our range on stronger volumes.
+demand	negative	0	Aerospace orders declined as customers delayed deliveries.
+demand	negative	0	Some customers have been pushing out orders and we saw softness in demand.
+demand	negative	1	Churn increased in the mid-market as customers consolidated vendors.
+demand	negative	0	Net revenue retention fell to 113% from 118% a year ago.
+demand	negative	1	Sales cycles lengthened materially and deal closures slipped into next quarter.
+demand	negative	0	Revenue declined 5% as weak demand in Europe offset growth in North America.
+demand	neutral	0	Revenue was 4.2 billion dollars, in line with the consensus estimate.
+demand	neutral	0	Demand in the quarter was consistent with the trends we described last quarter.
+demand	neutral	0	We serve customers in more than 40 countries across three segments.
+demand	neutral	0	Orders were essentially unchanged from the prior-year quarter.
+litigation	positive	0	The court dismissed the patent lawsuit in our favor and we do not expect an appeal.
+litigation	positive	0	We reached a favorable settlement that resolved the class action at no cost to the company.
+litigation	positive	1	The regulatory investigation was closed without any findings against the company.
+litigation	positive	0	We do not expect any material impact from ongoing litigation matters.
+litigation	positive	1	Legal expenses decreased as the dispute was resolved earlier than planned.
+litigation	negative	0	We could face a material charge if the outcome of the patent dispute is unfavorable.
+litigation	negative	1	Litigation expenses increased this quarter as the patent case moved toward trial.
+litigation	negative	0	We have been named as a defendant in a class action lawsuit and an adverse outcome could be material.
+litigation	negative	1	The regulator opened an investigation into our sales practices and we received a subpoena.
+litigation	negative	0	We are unable to quantify the litigation exposure and it may be significant.
+litigation	negative	1	The jury verdict went against us and we recorded a 90 million dollar provision.
+litigation	neutral	0	The trial in the patent matter is scheduled to begin in March.
+litigation	neutral	0	We cannot comment on the details of pending legal proceedings.
+litigation	neutral	0	Legal proceedings are described in Note 12 to the consolidated financial statements.
+litigation	neutral	0	There is an ongoing patent dispute and we are monitoring it.
+management_tone	positive	0	Our management team is confident in the outlook and the strength of our strategy.
+management_tone	positive	0	We are very optimistic about the pipeline and pleased with the execution across the business.
+management_tone	positive	0	We feel comfortable with our position and excited about the opportunities ahead.
+management_tone	positive	0	I remain highly confident that we will deliver on our commitments.
+management_tone	positive	1	We are encouraged by early results and believe the worst is behind us.
+management_tone	negative	0	We are cautious about the tariff situation and it is difficult to predict the impact.
+management_tone	negative	0	It is hard to say when this normalizes and we are not comfortable giving a firmer view.
+management_tone	negative	0	We are not able to say whether further cuts will be needed.
+management_tone	negative	0	Management is concerned about the pace of customer decisions and is disappointed with the quarter.
+management_tone	negative	1	We are unable to provide additional detail and remain uncertain about the path forward.
+management_tone	negative	0	Visibility is limited and we do not have a firm view on the second half.
+management_tone	neutral	0	We will now take questions from the audience.
+management_tone	neutral	0	We believe the disclosure in our filings speaks for itself.
+management_tone	neutral	0	Thank you for joining us today and please refer to the slides on our website.
+management_tone	neutral	0	We are monitoring the situation and will report back next quarter.
+liquidity	positive	0	Our liquidity position is strong with over 1.2 billion dollars of cash and an undrawn revolving credit facility.
+liquidity	positive	1	We repaid 200 million dollars of debt and our leverage ratio improved.
+liquidity	positive	0	We generated record free cash flow and have no debt outstanding.
+liquidity	positive	1	Total liabilities decreased and our net debt fell to its lowest level in a decade.
+liquidity	positive	0	We ended the quarter with ample liquidity and significant covenant headroom.
+liquidity	positive	1	Working capital needs declined and cash conversion improved.
+liquidity	negative	0	Free cash flow was lower on higher working capital and we drew 150 million dollars on our revolver.
+liquidity	negative	0	Our covenant headroom is tighter than last year and we are evaluating our options.
+liquidity	negative	1	Net debt increased to 3.1 billion dollars and leverage rose above our target.
+liquidity	negative	0	A failure to comply with our financial covenants could restrict our access to liquidity.
+liquidity	negative	1	Cash declined by 400 million dollars and we fully drew our credit facility.
+liquidity	negative	0	Liquidity remains a concern given limited cash and upcoming debt maturities.
+liquidity	neutral	0	We had 900 million dollars of cash and cash equivalents as of June 30.
+liquidity	neutral	0	Our credit agreement matures in 2028 and contains customary covenants.
+liquidity	neutral	0	Capital expenditures for the year are expected to be approximately 250 million dollars.
+liquidity	neutral	0	Cash and cash equivalents were unchanged compared with the prior quarter.
