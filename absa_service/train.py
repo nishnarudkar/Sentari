@@ -58,7 +58,6 @@ def main(argv=None) -> dict:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n-train", type=int, default=4000)
     ap.add_argument("--epochs", type=int, default=12)
-    ap.add_argument("--seeds", type=int, default=1, help="training seeds for trainable models (mean reported)")
     ap.add_argument("--transformer", action="store_true")
     ap.add_argument("--transformer-zero-shot", action="store_true")
     ap.add_argument("--tf-epochs", type=int, default=2)
@@ -86,7 +85,8 @@ def main(argv=None) -> dict:
         t0 = time.perf_counter()
         if model.trainable:
             model.fit(train, val)
-            model.save(models_dir)
+            if not getattr(model, "zero_shot", False):  # zero-shot weights are just the public checkpoint
+                model.save(models_dir)
         train_s = time.perf_counter() - t0
         gold_rep = evaluate(model, gold)
         val_rep = evaluate(model, val) if model.trainable else None

@@ -1,0 +1,57 @@
+# Local full stack:  docker compose up --build
+#   api        http://localhost:8000   (FastAPI; docs at /docs)
+#   dashboard  http://localhost:3000
+#   mlflow     http://localhost:5000
+#   postgres   localhost:5432 (pgvector image; pgvector is optional - embeddings are stored as JSON by default)
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: sentari
+      POSTGRES_PASSWORD: sentari
+      POSTGRES_DB: sentari
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./storage/migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentari"]
+      interval: 5s
+      retries: 10
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts
+    ports: ["5000:5000"]
+    volumes: ["./mlflow:/mlflow"]
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg2://sentari:sentari@postgres:5432/sentari
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      PORT: "8000"
+      CORS_ORIGINS: http://localhost:3000
+      # optional: enable the LLM agents / digest
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      DIGEST_TO: ${DIGEST_TO:-}
+      SENTARI_CRON_TOKEN: ${SENTARI_CRON_TOKEN:-}
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    volumes:
+      - ./artifacts:/app/artifacts   # trained models written by `python -m absa_service.train`
+
+  dashboard:
+    build:
+      context: ./dashboard
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    environment: { PORT: "3000" }
+    ports: ["3000:3000"]
+    depends_on: [api]
+
+volumes:
+  pgdata:

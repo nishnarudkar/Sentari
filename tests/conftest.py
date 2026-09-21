@@ -3,6 +3,7 @@ import os
 import pytest
 
 os.environ["SENTARI_LLM"] = "heuristic"   # never call an external LLM in tests
+os.environ["SENTARI_MODEL"] = "lm_directional"  # never depend on a locally trained/registry model
 os.environ.pop("SENTARI_NLI", None)
 
 

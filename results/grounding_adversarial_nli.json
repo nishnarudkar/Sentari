@@ -1,0 +1,55 @@
+{
+  "faithful": {
+    "n": 43,
+    "supported": 43,
+    "unverified": 0,
+    "rejected": 0,
+    "false_rejection_rate": 0.0,
+    "false_flag_rate": 0.0
+  },
+  "number_swap": {
+    "n": 13,
+    "supported": 0,
+    "unverified": 0,
+    "rejected": 13,
+    "catch_rate": 1.0,
+    "hard_reject_rate": 1.0
+  },
+  "polarity_flip": {
+    "n": 22,
+    "supported": 0,
+    "unverified": 0,
+    "rejected": 22,
+    "catch_rate": 1.0,
+    "hard_reject_rate": 1.0
+  },
+  "wrong_citation": {
+    "n": 43,
+    "supported": 0,
+    "unverified": 28,
+    "rejected": 15,
+    "catch_rate": 1.0,
+    "hard_reject_rate": 0.3488372093023256
+  },
+  "fabrication": {
+    "n": 43,
+    "supported": 0,
+    "unverified": 18,
+    "rejected": 25,
+    "catch_rate": 1.0,
+    "hard_reject_rate": 0.5813953488372093
+  },
+  "no_citation": {
+    "n": 43,
+    "supported": 0,
+    "unverified": 0,
+    "rejected": 43,
+    "catch_rate": 1.0,
+    "hard_reject_rate": 1.0
+  },
+  "_overall": {
+    "corrupted_n": 164,
+    "overall_catch_rate": 1.0,
+    "skeptic_entailment_backend": "nli"
+  }
+}

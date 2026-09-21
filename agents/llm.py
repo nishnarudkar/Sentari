@@ -46,18 +46,15 @@ class LLM:
 
 
 class HeuristicLLM(LLM):
-    name = "heuristic"
-    is_generative = False
+    def __init__(self):
+        super().__init__(name="heuristic", is_generative=False)
 
 
 class AnthropicLLM(LLM):
-    is_generative = True
-
     def __init__(self, model: str | None = None):
         import anthropic
+        super().__init__(name=model or os.environ.get("SENTARI_LLM_MODEL", "claude-sonnet-5"), is_generative=True)
         self.client = anthropic.Anthropic()
-        self.name = model or os.environ.get("SENTARI_LLM_MODEL", "claude-sonnet-5")
-        self.usage = Usage()
 
     def complete_json(self, system: str, user: str, max_tokens: int = 1500) -> dict:
         resp = self.client.messages.create(

@@ -1,0 +1,19 @@
+{
+  "n_briefs": 2,
+  "latency_s": {
+    "mean": 0.788,
+    "median": 0.788,
+    "p95": 1.551,
+    "max": 1.551
+  },
+  "by_llm": {
+    "heuristic": {
+      "n": 2,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "avg_cost_usd_per_brief": 0.0,
+      "avg_tokens_per_brief": 0.0
+    }
+  }
+}
