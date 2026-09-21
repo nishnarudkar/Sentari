@@ -1,0 +1,8 @@
+TITLE: Novalite Software Q2 2025 Earnings Call (SYNTHETIC)
+Operator: Welcome to the Novalite Software second quarter 2025 earnings call.
+Priya Raman -- CEO: Another strong quarter. Subscription revenue grew 26% and demand for our platform remained robust. We are reiterating our annual guidance. Our management team remains confident in the strategy.
+James Holt -- CFO: Gross margin declined to 75% on higher compute costs, in line with our commentary last quarter. Operating margin was flat. Free cash flow was healthy and our liquidity is strong with no debt outstanding. There were no material legal matters.
+Operator: We will now open it up for questions. Our first question comes from Sam Whitfield with Harbor Capital.
+Sam Whitfield -- Analyst: Net retention fell to 113%. What is driving that and should we worry?
+Priya Raman -- CEO: We do not see it as a structural issue, but some customers are consolidating vendors and we have seen churn in the mid-market. It is difficult to say when it stabilizes.
+James Holt -- CFO: We expect margins to remain under pressure, and we may need to invest more in infrastructure. We are not comfortable giving a firmer view on the second half.
