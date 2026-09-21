@@ -12,6 +12,7 @@ RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu torch \
  && python -m spacy download en_core_web_sm \
  && python -c "import nltk; [nltk.download(p, quiet=True) for p in ('wordnet','sentiwordnet','omw-1.4')]"
 
+COPY sentari_env.py ./
 COPY absa_service ./absa_service
 COPY agents ./agents
 COPY ingestion ./ingestion

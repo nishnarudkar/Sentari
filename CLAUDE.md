@@ -18,6 +18,8 @@ uvicorn absa_service.main:app --port 8000             # API (docs at /docs)
 cd dashboard && npm run dev                           # http://localhost:3000  (npm run lint = tsc, npm run build)
 ```
 
+Config: `.env` (copy of `.env.example`, gitignored) is loaded by `sentari_env.py`, which every package `__init__` imports so it runs before import-time env reads; real env vars win, empty values are ignored, `SENTARI_SKIP_DOTENV=1` disables it (tests set this). New env vars must be added to `.env.example` (a test enforces it). What the user must supply and how: `SETUP.md`.
+
 Env vars: `DATABASE_URL` (default `sqlite:///sentari.db`), `SENTARI_MODEL`, `SENTARI_LLM=heuristic` (force offline agents), `ANTHROPIC_API_KEY`, `SENTARI_NLI=hf`, `SENTARI_CRON_TOKEN`, `SENTARI_USER_AGENT` (EDGAR), `MLFLOW_TRACKING_URI`, `SLACK_WEBHOOK_URL`, `SMTP_*`/`DIGEST_TO`. `tests/conftest.py` pins `SENTARI_LLM=heuristic` and `SENTARI_MODEL=lm_directional`; keep tests independent of local artifacts/DB.
 
 ## Architecture (data flow)

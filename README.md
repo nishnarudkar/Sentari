@@ -42,6 +42,9 @@ uvicorn absa_service.main:app --port 8000        # API, docs at /docs
 cd dashboard && npm install && npm run dev       # http://localhost:3000
 ```
 
+**Configuration:** copy [.env.example](.env.example) to `.env` (gitignored; loaded automatically by
+[sentari_env.py](sentari_env.py), real env vars win). What to obtain and how: [SETUP.md](SETUP.md).
+
 Optional environment variables: `DATABASE_URL` (default local SQLite), `ANTHROPIC_API_KEY` (LLM-written bull/bear/judge
 text instead of the offline heuristic; `SENTARI_LLM=heuristic` forces offline), `SENTARI_MODEL` (override the serving
 model), `SENTARI_NLI=hf` (transformer NLI entailment in the Skeptic), `SLACK_WEBHOOK_URL`, `SMTP_*`/`DIGEST_TO`,
