@@ -1,0 +1,29 @@
+# Data + model versioning with DVC:  dvc repro   (init once with `dvc init`; add a remote for team sharing)
+stages:
+  train_ladder:
+    cmd: python -m absa_service.train --transformer --transformer-zero-shot
+    deps:
+      - absa_service
+      - data/gold/gold.tsv
+    outs:
+      - artifacts/models
+    metrics:
+      - artifacts/results/model_ladder.json:
+          cache: false
+  lexicon_failure:
+    cmd: python -m evaluation.lexicon_failure
+    deps:
+      - evaluation/lexicon_failure.py
+      - data/gold/gold.tsv
+      - artifacts/models
+    metrics:
+      - artifacts/results/lexicon_failures.json:
+          cache: false
+  grounding_adversarial:
+    cmd: python -m evaluation.grounding_audit --adversarial
+    deps:
+      - agents/skeptic_agent.py
+      - evaluation/grounding_audit.py
+    metrics:
+      - artifacts/results/grounding_adversarial_heuristic.json:
+          cache: false

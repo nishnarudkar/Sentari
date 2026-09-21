@@ -15,3 +15,8 @@ node_modules/
 .next/
 dashboard/.env.local
 *.egg-info/
+artifacts_train.log
+sentari.db
+demo.db
+*.tsbuildinfo
+dashboard/next-env.d.ts

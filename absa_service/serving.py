@@ -32,9 +32,22 @@ def build_model(name: str) -> SentimentModel:
     return model
 
 
+def registry_serving_name() -> str | None:
+    """Name of the model flagged `serving` in the model registry (None if the DB/registry is empty)."""
+    try:
+        from absa_service.registry import serving_model
+        from storage.db import get_engine, make_session_factory
+        with make_session_factory(get_engine())() as session:
+            run = serving_model(session)
+            return run.name if run else None
+    except Exception:  # noqa: BLE001 - no DB yet / tables missing
+        return None
+
+
 @lru_cache(maxsize=4)
 def get_model(name: str | None = None) -> SentimentModel:
-    name = name or os.environ.get("SENTARI_MODEL", DEFAULT_MODEL)
+    """Resolution order: explicit name > SENTARI_MODEL env > registry `serving` flag > rule-based default."""
+    name = name or os.environ.get("SENTARI_MODEL") or registry_serving_name() or DEFAULT_MODEL
     try:
         return build_model(name)
     except FileNotFoundError:

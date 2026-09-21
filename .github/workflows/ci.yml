@@ -1,0 +1,30 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - name: Install (CPU torch)
+        run: |
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu torch
+          grep -v '^torch' requirements.txt | pip install -r /dev/stdin
+          pip install langgraph anthropic scipy
+          python -m spacy download en_core_web_sm
+          python -c "import nltk; [nltk.download(p) for p in ('wordnet','sentiwordnet','omw-1.4')]"
+      - run: python -m pytest -q
+  dashboard:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: dashboard } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: dashboard/package-lock.json }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run build

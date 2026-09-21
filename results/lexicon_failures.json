@@ -1,0 +1,1399 @@
+{
+  "n_gold": 94,
+  "n_trap": 26,
+  "models": {
+    "vader": {
+      "error_rate": 0.35106382978723405,
+      "error_rate_trap": 0.6153846153846154,
+      "error_rate_nontrap": 0.25,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect operating expenses to come in below the low end of our prior guidance.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.273,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We are narrowing our guidance range upward to reflect the record backlog.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not expect to meet our prior guidance for free cash flow this year.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.511,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "Guidance assumes an effective tax rate of 21% and a share count of 310 million.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.649,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating costs decreased 8% as a percentage of sales, lifting operating margin.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Cost of revenue increased 14% year over year, outpacing sales growth.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.572,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating margin declined as pricing did not fully offset higher costs.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Tariffs added roughly 60 basis points of cost and squeezed margins.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Gross margin was 78% in the quarter, in line with our expectations.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.477,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Bookings accelerated in the quarter and our pipeline is at an all-time high.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Customer churn decreased to its lowest level in three years.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.382,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Demand for our AI products exceeded our expectations.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.128,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Churn increased in the mid-market as customers consolidated vendors.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.273,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Net revenue retention fell to 113% from 118% a year ago.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Sales cycles lengthened materially and deal closures slipped into next quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Demand in the quarter was consistent with the trends we described last quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.128,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The regulatory investigation was closed without any findings against the company.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.178,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal expenses decreased as the dispute was resolved earlier than planned.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.128,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Litigation expenses increased this quarter as the patent case moved toward trial.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.077,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The regulator opened an investigation into our sales practices and we received a subpoena.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We are unable to quantify the litigation exposure and it may be significant.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The jury verdict went against us and we recorded a 90 million dollar provision.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.153,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We cannot comment on the details of pending legal proceedings.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.128,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal proceedings are described in Note 12 to the consolidated financial statements.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.128,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "There is an ongoing patent dispute and we are monitoring it.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.402,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We are encouraged by early results and believe the worst is behind us.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.382,
+          "trap": true
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "Thank you for joining us today and please refer to the slides on our website.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.586,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Total liabilities decreased and our net debt fell to its lowest level in a decade.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.735,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Free cash flow was lower on higher working capital and we drew 150 million dollars on our revolver.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.273,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our covenant headroom is tighter than last year and we are evaluating our options.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash declined by 400 million dollars and we fully drew our credit facility.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.434,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our credit agreement matures in 2028 and contains customary covenants.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.7,
+          "trap": false
+        }
+      ]
+    },
+    "sentiwordnet": {
+      "error_rate": 0.5106382978723404,
+      "error_rate_trap": 0.7307692307692307,
+      "error_rate_nontrap": 0.4264705882352941,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "Given the strong start to the year, we are lifting our outlook for the remainder of 2025.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.002,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect operating expenses to come in below the low end of our prior guidance.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.005,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "The updated outlook reflects a lower tax rate and reduced interest expense.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.021,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We are narrowing our guidance range upward to reflect the record backlog.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.063,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect revenue growth at the low end of the range, and visibility beyond the third quarter is limited.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.063,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We are withdrawing our outlook until the uncertainty around the merger clears.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.002,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "The company cut its forecast for the second half and no longer expects to hit its margin target.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.021,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not provide quarterly guidance and will update our annual forecast in the fourth quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.147,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating costs decreased 8% as a percentage of sales, lifting operating margin.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.026,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "EBITDA margin reached a record 28% driven by operating leverage.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.012,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Gross margin contracted 90 basis points as input cost inflation and tariffs weighed on profitability.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.196,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Compute costs are rising faster than planned and we expect margin pressure over the next few quarters.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.023,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Cost of revenue increased 14% year over year, outpacing sales growth.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.057,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Tariffs added roughly 60 basis points of cost and squeezed margins.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.053,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Margins were unchanged sequentially at 31%.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.128,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Order backlog reached a record high and customer demand remains strong.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.137,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Bookings accelerated in the quarter and our pipeline is at an all-time high.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.013,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Customer churn decreased to its lowest level in three years.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.132,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Demand for our AI products exceeded our expectations.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.02,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Churn increased in the mid-market as customers consolidated vendors.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.027,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Net revenue retention fell to 113% from 118% a year ago.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.032,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Sales cycles lengthened materially and deal closures slipped into next quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.008,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Orders were essentially unchanged from the prior-year quarter.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.067,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The court dismissed the patent lawsuit in our favor and we do not expect an appeal.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.123,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The regulatory investigation was closed without any findings against the company.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.025,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.235,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal expenses decreased as the dispute was resolved earlier than planned.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.049,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Litigation expenses increased this quarter as the patent case moved toward trial.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.011,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We have been named as a defendant in a class action lawsuit and an adverse outcome could be material.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.005,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The regulator opened an investigation into our sales practices and we received a subpoena.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.029,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The jury verdict went against us and we recorded a 90 million dollar provision.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.009,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We cannot comment on the details of pending legal proceedings.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.07,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal proceedings are described in Note 12 to the consolidated financial statements.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.101,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We are encouraged by early results and believe the worst is behind us.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.159,
+          "trap": true
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We are cautious about the tariff situation and it is difficult to predict the impact.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.043,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "Management is concerned about the pace of customer decisions and is disappointed with the quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.035,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "Thank you for joining us today and please refer to the slides on our website.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.114,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our liquidity position is strong with over 1.2 billion dollars of cash and an undrawn revolving credit facility.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.06,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We generated record free cash flow and have no debt outstanding.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.061,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Total liabilities decreased and our net debt fell to its lowest level in a decade.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.057,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Free cash flow was lower on higher working capital and we drew 150 million dollars on our revolver.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.057,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our covenant headroom is tighter than last year and we are evaluating our options.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.03,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Net debt increased to 3.1 billion dollars and leverage rose above our target.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.01,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "A failure to comply with our financial covenants could restrict our access to liquidity.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.042,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash declined by 400 million dollars and we fully drew our credit facility.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.007,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our credit agreement matures in 2028 and contains customary covenants.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.078,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Capital expenditures for the year are expected to be approximately 250 million dollars.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.068,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash and cash equivalents were unchanged compared with the prior quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.128,
+          "trap": false
+        }
+      ]
+    },
+    "lm_lexicon": {
+      "error_rate": 0.24468085106382978,
+      "error_rate_trap": 0.5769230769230769,
+      "error_rate_nontrap": 0.11764705882352941,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect operating expenses to come in below the low end of our prior guidance.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "The updated outlook reflects a lower tax rate and reduced interest expense.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -1.0,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect revenue growth at the low end of the range, and visibility beyond the third quarter is limited.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.7,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not expect to meet our prior guidance for free cash flow this year.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating costs decreased 8% as a percentage of sales, lifting operating margin.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "We lowered our cost base and margins improved as a result.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Gross margin contracted 90 basis points as input cost inflation and tariffs weighed on profitability.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.7,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Cost of revenue increased 14% year over year, outpacing sales growth.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.7,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Tariffs added roughly 60 basis points of cost and squeezed margins.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Customer churn decreased to its lowest level in three years.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Churn increased in the mid-market as customers consolidated vendors.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Net revenue retention fell to 113% from 118% a year ago.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Sales cycles lengthened materially and deal closures slipped into next quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The court dismissed the patent lawsuit in our favor and we do not expect an appeal.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.7,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal expenses decreased as the dispute was resolved earlier than planned.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Litigation expenses increased this quarter as the patent case moved toward trial.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "It is hard to say when this normalizes and we are not comfortable giving a firmer view.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "Visibility is limited and we do not have a firm view on the second half.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Total liabilities decreased and our net debt fell to its lowest level in a decade.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We ended the quarter with ample liquidity and significant covenant headroom.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Working capital needs declined and cash conversion improved.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Net debt increased to 3.1 billion dollars and leverage rose above our target.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        }
+      ]
+    },
+    "lm_directional": {
+      "error_rate": 0.10638297872340426,
+      "error_rate_trap": 0.15384615384615385,
+      "error_rate_nontrap": 0.08823529411764706,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect revenue growth at the low end of the range, and visibility beyond the third quarter is limited.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.5,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not expect to meet our prior guidance for free cash flow this year.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating costs decreased 8% as a percentage of sales, lifting operating margin.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Gross margin contracted 90 basis points as input cost inflation and tariffs weighed on profitability.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.9,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Operating margin declined as pricing did not fully offset higher costs.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 1.0,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Sales cycles lengthened materially and deal closures slipped into next quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The court dismissed the patent lawsuit in our favor and we do not expect an appeal.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We are encouraged by early results and believe the worst is behind us.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.1,
+          "trap": true
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We believe the disclosure in our filings speaks for itself.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.3,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We ended the quarter with ample liquidity and significant covenant headroom.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.0,
+          "trap": false
+        }
+      ]
+    },
+    "nb_tfidf": {
+      "error_rate": 0.2553191489361702,
+      "error_rate_trap": 0.3076923076923077,
+      "error_rate_nontrap": 0.23529411764705882,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "Management reiterated its full-year guidance and pointed to upside from recent contract wins.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.781,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "The updated outlook reflects a lower tax rate and reduced interest expense.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.081,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "Guidance assumes an effective tax rate of 21% and a share count of 310 million.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.605,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "We lowered our cost base and margins improved as a result.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.048,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Compute costs are rising faster than planned and we expect margin pressure over the next few quarters.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.019,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Tariffs added roughly 60 basis points of cost and squeezed margins.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.036,
+          "trap": true
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Margins were unchanged sequentially at 31%.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.385,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Revenue beat the top end of our range on stronger volumes.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.564,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Sales cycles lengthened materially and deal closures slipped into next quarter.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": 0.05,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Revenue declined 5% as weak demand in Europe offset growth in North America.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.234,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "We serve customers in more than 40 countries across three segments.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.064,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Orders were essentially unchanged from the prior-year quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.912,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.943,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We could face a material charge if the outcome of the patent dispute is unfavorable.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.475,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Litigation expenses increased this quarter as the patent case moved toward trial.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.842,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "There is an ongoing patent dispute and we are monitoring it.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.184,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "I remain highly confident that we will deliver on our commitments.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.042,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We believe the disclosure in our filings speaks for itself.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.529,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our liquidity position is strong with over 1.2 billion dollars of cash and an undrawn revolving credit facility.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.67,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We generated record free cash flow and have no debt outstanding.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.454,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Net debt increased to 3.1 billion dollars and leverage rose above our target.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.763,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We had 900 million dollars of cash and cash equivalents as of June 30.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.014,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our credit agreement matures in 2028 and contains customary covenants.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.014,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash and cash equivalents were unchanged compared with the prior quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.377,
+          "trap": false
+        }
+      ]
+    },
+    "cnn": {
+      "error_rate": 0.2553191489361702,
+      "error_rate_trap": 0.07692307692307693,
+      "error_rate_nontrap": 0.3235294117647059,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "Management reiterated its full-year guidance and pointed to upside from recent contract wins.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.58,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect revenue growth at the low end of the range, and visibility beyond the third quarter is limited.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.277,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "Guidance assumes an effective tax rate of 21% and a share count of 310 million.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.749,
+          "trap": false
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not provide quarterly guidance and will update our annual forecast in the fourth quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.666,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "EBITDA margin reached a record 28% driven by operating leverage.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.698,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Profitability was hurt by unfavorable mix and one-time charges.",
+          "gold": "negative",
+          "predicted": "neutral",
+          "score": -0.067,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Order backlog reached a record high and customer demand remains strong.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.488,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Revenue declined 5% as weak demand in Europe offset growth in North America.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.202,
+          "trap": false
+        },
+        {
+          "aspect": "demand",
+          "sentence": "We serve customers in more than 40 countries across three segments.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.137,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The court dismissed the patent lawsuit in our favor and we do not expect an appeal.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.551,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.999,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "Legal expenses decreased as the dispute was resolved earlier than planned.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.417,
+          "trap": true
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "The trial in the patent matter is scheduled to begin in March.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.373,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "There is an ongoing patent dispute and we are monitoring it.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.752,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "I remain highly confident that we will deliver on our commitments.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": 0.039,
+          "trap": false
+        },
+        {
+          "aspect": "management_tone",
+          "sentence": "We believe the disclosure in our filings speaks for itself.",
+          "gold": "neutral",
+          "predicted": "positive",
+          "score": 0.052,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our liquidity position is strong with over 1.2 billion dollars of cash and an undrawn revolving credit facility.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.796,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We generated record free cash flow and have no debt outstanding.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.79,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We ended the quarter with ample liquidity and significant covenant headroom.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.675,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "A failure to comply with our financial covenants could restrict our access to liquidity.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.146,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash declined by 400 million dollars and we fully drew our credit facility.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.681,
+          "trap": true
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "We had 900 million dollars of cash and cash equivalents as of June 30.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.466,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Our credit agreement matures in 2028 and contains customary covenants.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.146,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Capital expenditures for the year are expected to be approximately 250 million dollars.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.372,
+          "trap": false
+        }
+      ]
+    },
+    "finbert_ft": {
+      "error_rate": 0.06382978723404255,
+      "error_rate_trap": 0.11538461538461539,
+      "error_rate_nontrap": 0.04411764705882353,
+      "failures": [
+        {
+          "aspect": "guidance",
+          "sentence": "We now expect operating expenses to come in below the low end of our prior guidance.",
+          "gold": "positive",
+          "predicted": "negative",
+          "score": -0.991,
+          "trap": true
+        },
+        {
+          "aspect": "guidance",
+          "sentence": "We do not provide quarterly guidance and will update our annual forecast in the fourth quarter.",
+          "gold": "neutral",
+          "predicted": "negative",
+          "score": -0.835,
+          "trap": false
+        },
+        {
+          "aspect": "margins",
+          "sentence": "Cost of revenue increased 14% year over year, outpacing sales growth.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.994,
+          "trap": true
+        },
+        {
+          "aspect": "demand",
+          "sentence": "Some customers have been pushing out orders and we saw softness in demand.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.207,
+          "trap": false
+        },
+        {
+          "aspect": "litigation",
+          "sentence": "We do not expect any material impact from ongoing litigation matters.",
+          "gold": "positive",
+          "predicted": "neutral",
+          "score": -0.292,
+          "trap": false
+        },
+        {
+          "aspect": "liquidity",
+          "sentence": "Cash declined by 400 million dollars and we fully drew our credit facility.",
+          "gold": "negative",
+          "predicted": "positive",
+          "score": 0.74,
+          "trap": true
+        }
+      ]
+    }
+  }
+}
