@@ -1,0 +1,8 @@
+TITLE: Novalite Software Q1 2025 Earnings Call (SYNTHETIC)
+Operator: Welcome to the Novalite Software first quarter 2025 earnings call.
+Priya Raman -- CEO: We had an outstanding quarter. Subscription revenue grew 28% and net revenue retention improved to 118%. Customer demand for our AI products exceeded our expectations. We are raising our annual guidance and management is very optimistic about the pipeline.
+James Holt -- CFO: Gross margin was 78% and operating margin expanded 300 basis points as we scaled. Free cash flow more than doubled. We have no debt and 2.1 billion dollars in cash, so liquidity is excellent. There were no material legal developments.
+Operator: We will now open it up for questions. Our first question comes from Sam Whitfield with Harbor Capital.
+Sam Whitfield -- Analyst: Deal cycles seem longer in enterprise. Are you seeing that? And are AI compute costs pressuring margins?
+Priya Raman -- CEO: We have seen some elongation in large enterprise deals, and it is hard to say when that normalizes. Sales cycles increased modestly.
+James Holt -- CFO: Compute costs are rising faster than we had planned, and we expect margin pressure over the next few quarters. We believe we can manage it, but we are not providing a specific outlook.

@@ -1,0 +1,19 @@
+# Ingestion + daily-run configuration. Consumed by ingestion/pipeline.py and the
+# Cloud Scheduler / Airflow job (see deploy/README.md).
+schedule:
+  cron: "30 6 * * 1-5"      # weekdays 06:30 UTC
+  timezone: "UTC"
+  target: "POST /run/daily"  # Cloud Scheduler hits the API service
+
+lookback_days: 0             # 0 = no cutoff (first run); set to e.g. 7 for daily runs
+sources:
+  - sample                   # offline synthetic fixtures (demo/tests)
+  # - sec_edgar              # requires SENTARI_USER_AGENT="Name email"
+  # - news_rss
+  # - nse
+watchlist:
+  - ACMX
+  - NVLT
+retry:
+  attempts: 3
+  backoff_seconds: 2

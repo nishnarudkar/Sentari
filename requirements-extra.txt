@@ -1,0 +1,10 @@
+# Optional: transformer fine-tune, LangGraph agents, Postgres, digest
+transformers>=4.40
+datasets>=2.18
+langgraph>=0.2
+langchain-core>=0.2
+anthropic>=0.30
+psycopg2-binary>=2.9
+pgvector>=0.2
+scipy>=1.11
+dvc>=3.50
