@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📊 Sentari
+# Sentari
 
 ### Financial Aspect-Based Sentiment & Multi-Agent Intelligence Engine
 
@@ -23,7 +23,7 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
 **Sentari** is an end-to-end financial intelligence framework designed to extract, score, and synthesize aspect-based sentiment across earnings call transcripts, SEC EDGAR 10-K/10-Q MD&A sections, and regulatory filings. 
 
@@ -31,15 +31,15 @@ Unlike traditional sentiment tools that collapse document polarity into a single
 
 ### Key Highlights
 
-- 🎯 **Aspect-Based Extraction**: SpaCy dependency parsing combined with domain rules to extract directional financial statements.
-- 🪜 **10-Model ABSA Ladder**: Benchmarked across Lexicons (VADER, SentiWordNet, Loughran-McDonald), ML (Naive Bayes, Decision Trees), Deep Learning (CNN, BiLSTM), and Fine-Tuned Transformers (**FinBERT** achieving **0.938 Macro-F1**).
-- 🤖 **LangGraph Multi-Agent Debate**: Orchestrated multi-agent pipeline (`Extractor` $\rightarrow$ `Bull` $\parallel$ `Bear` $\rightarrow$ `Skeptic` $\rightarrow$ `Judge`) producing balanced, verifiable investment briefs.
-- 🛡️ **Grounding Audit Gate**: Skeptic agent verifies every agent claim against verbatim source chunks, detecting numerical errors, citation mismatches, and polarity hallucinations (100% catch rate with NLI backend).
-- 📈 **Quarter-over-Quarter Trajectories**: Next.js dashboard tracks aspect shifts, prepared-remarks vs. Q&A delta signals, and Population Stability Index (PSI) drift monitoring.
+- **Aspect-Based Extraction**: SpaCy dependency parsing combined with domain rules to extract directional financial statements.
+- **10-Model ABSA Ladder**: Benchmarked across Lexicons (VADER, SentiWordNet, Loughran-McDonald), ML (Naive Bayes, Decision Trees), Deep Learning (CNN, BiLSTM), and Fine-Tuned Transformers (**FinBERT** achieving **0.938 Macro-F1**).
+- **LangGraph Multi-Agent Debate**: Orchestrated multi-agent pipeline (`Extractor` $\rightarrow$ `Bull` $\parallel$ `Bear` $\rightarrow$ `Skeptic` $\rightarrow$ `Judge`) producing balanced, verifiable investment briefs.
+- **Grounding Audit Gate**: Skeptic agent verifies every agent claim against verbatim source chunks, detecting numerical errors, citation mismatches, and polarity hallucinations (100% catch rate with NLI backend).
+- **Quarter-over-Quarter Trajectories**: Next.js dashboard tracks aspect shifts, prepared-remarks vs. Q&A delta signals, and Population Stability Index (PSI) drift monitoring.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```mermaid
 flowchart TD
@@ -102,7 +102,7 @@ flowchart TD
 
 ---
 
-## 🤖 Multi-Agent Pipeline Workflow
+## Multi-Agent Pipeline Workflow
 
 Sentari uses **LangGraph** to model a multi-agent debate where claims must be proven against underlying text before inclusion in executive briefs.
 
@@ -133,7 +133,7 @@ sequenceDiagram
 
 ---
 
-## 📊 Empirical Results & Benchmarks
+## Empirical Results & Benchmarks
 
 Full benchmarks and evaluation reporting can be generated via [`evaluation/`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/evaluation) and [`results/REPORT.md`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/results/REPORT.md).
 
@@ -151,7 +151,7 @@ Evaluated on **94 gold-standard sentences** (6 aspects $\times$ 3 classes) and *
 | **CNN** | `0.739` | `0.745` | `0.920` | 1D Convolutional Neural Network |
 | **BiLSTM** | `0.607` | `0.638` | `0.810` | Bidirectional Recurrent Network |
 | **FinBERT (Zero-Shot)** | `0.601` | `0.606` | `0.350` | Pre-trained domain transformer |
-| 🏆 **FinBERT (Fine-Tuned)** | **`0.938`** | **`0.936`** | **`0.880`** | **Domain-adapted sequence classification** |
+| **FinBERT (Fine-Tuned)** | **`0.938`** | **`0.936`** | **`0.880`** | **Domain-adapted sequence classification** |
 
 > [!NOTE]  
 > **Financial Trap Analysis:** General lexicons fail on domain-inverted polarities (e.g., *"falling litigation expenses"*, *"margin compression"*). Fine-tuned FinBERT and directional rules overcome these inversions effectively.
@@ -169,7 +169,7 @@ Claims were artificially corrupted to test the Skeptic Gate's audit precision:
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Sentari/
@@ -204,7 +204,7 @@ Sentari/
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python `3.10+`
@@ -257,7 +257,7 @@ npm run dev
 
 ---
 
-## ⚙️ Environment Configuration
+## Environment Configuration
 
 Refer to [`SETUP.md`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/SETUP.md) for full configuration guidelines.
 
@@ -273,11 +273,11 @@ Refer to [`SETUP.md`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/SETUP.md) f
 
 ---
 
-## 🎓 Academic Credit & License
+## Academic Credit & License
 
-- **Author**: Nishant Vikas Narudkar
+- **Author**: Nishant Vikas Narudkar, Aamir Sarang, Peeyush Mota , Yash Singh
 - **Institution**: RAIT (D Y Patil University)
-- **Course**: Final-Year Project, Sentiment Analysis (`231CAUEC51`)
+- **Course**: Lab Project, Sentiment Analysis (`231CAUEC51`)
 - **Full Specification**: [`project.md`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/project.md)
 
 ---
@@ -285,3 +285,4 @@ Refer to [`SETUP.md`](file:///C:/Users/Asus/OneDrive/Desktop/Sentari/SETUP.md) f
 <div align="center">
   <sub>Built for transparent financial disclosure analysis. Sentari &copy; 2026.</sub>
 </div>
+
