@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import sys
 
 from sqlalchemy import func, select
 
@@ -17,6 +18,9 @@ from storage.models import Document
 
 
 def main(argv=None) -> None:
+    # the digest uses ▲/▼/⚠; legacy Windows consoles (cp1252) cannot encode them and would crash the run
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(prog="sentari")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("daily")
