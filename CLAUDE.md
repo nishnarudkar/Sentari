@@ -7,7 +7,7 @@ Remote: `https://github.com/nishnarudkar/Sentari.git` (branch `main`). The user 
 ## Commands
 
 ```bash
-python -m pytest -q                                   # 49 tests, fully offline (~15 s)
+python -m pytest -q                                   # 55 tests, fully offline (~20 s)
 python -m absa_service.cli daily                      # ingest sample -> score -> briefs -> drift -> digest
 python -m absa_service.cli analyze "text"             # aspect sentiment for free text
 python -m absa_service.train [--transformer] [--transformer-zero-shot]   # model ladder -> artifacts/, MLflow, model_runs
@@ -48,4 +48,5 @@ Key conventions:
 - Don't `taskkill /IM node.exe` (kills unrelated processes); stop servers by PID/command line.
 - Git converts line endings (`.gitattributes` forces LF); CRLF warnings are harmless.
 - `dashboard/` is Next 16 / React 19 (0 npm audit vulnerabilities at last check). Next may auto-generate `AGENTS.md`/`CLAUDE.md` in `dashboard/` on `npm run dev` — delete them, don't commit.
+- `report/`: project report (docx + pdf). Regenerate: `python report/tools/make_figures.py`; `python report/tools/capture_screenshots.py` (needs API on :8000, dashboard on :3000, optional `mlflow ui` on :5000; drives installed Edge via Playwright); `cd report/tools && npm install && node build_report.js`; `export_pdf.ps1` (Word COM: refreshes TOCs, exports PDF). Numbers in `build_report.js` prose are hand-checked against `results/` — re-verify if results change.
 - Generated/ignored: `artifacts/`, `mlruns/`, `*.db`, `data/cache/`, `node_modules/`, `.next/`. `results/` is the committed snapshot of evaluation output.
