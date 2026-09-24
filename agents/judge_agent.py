@@ -63,10 +63,23 @@ def _template_summary(ticker: str, stance: str, net: float, sup: list[Claim], de
     return sentences
 
 
+def dedupe_claims(claims: list[Claim]) -> tuple[list[Claim], int]:
+    """Keep the first claim per (side, cited sentences): an LLM may restate one sentence under several aspects."""
+    seen: set[tuple] = set()
+    kept: list[Claim] = []
+    for c in claims:
+        key = (c["side"], tuple(sorted(c.get("cited_chunk_ids") or [])))
+        if key in seen:
+            continue
+        seen.add(key)
+        kept.append(c)
+    return kept, len(claims) - len(kept)
+
+
 def run(state: BriefState, llm: LLM) -> BriefState:
     claims = state.get("verified", [])
-    supported = [c for c in claims if c["status"] == "supported"]
-    unverified = [c for c in claims if c["status"] == "unverified"]
+    supported, merged_sup = dedupe_claims([c for c in claims if c["status"] == "supported"])
+    unverified, merged_unv = dedupe_claims([c for c in claims if c["status"] == "unverified"])
     rejected = [c for c in claims if c["status"] == "rejected"]
     stance, net = stance_from_scores(state.get("aspect_summary", {}))
     conf, conf_detail = compute_confidence(state, claims)
@@ -84,7 +97,7 @@ def run(state: BriefState, llm: LLM) -> BriefState:
         "stance": stance, "net_sentiment": net, "confidence": conf, "confidence_detail": conf_detail,
         "summary": summary_sentences, "sections": by_aspect,
         "unverified": [_sentence(c) for c in unverified],
-        "dropped_claims": len(rejected), "aspect_summary": state.get("aspect_summary", {}),
+        "dropped_claims": len(rejected), "merged_duplicate_claims": merged_sup + merged_unv, "aspect_summary": state.get("aspect_summary", {}),
         "signals": state.get("signals", {}), "disclaimer": DISCLAIMER,
     }
     return {"brief": brief, "trace": [{"agent": "judge", "confidence": conf, "detail": conf_detail}]}  # type: ignore[return-value]
