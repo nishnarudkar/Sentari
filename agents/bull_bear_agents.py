@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import re
 
-from absa_service.schemas import ASPECTS
 from agents.llm import LLM
 from agents.state import BriefState, Claim, Evidence
 
@@ -36,13 +35,26 @@ def _clean_quote(text: str, limit: int = 220) -> str:
     return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "..."
 
 
+def _strength(e: Evidence) -> float:
+    """Same ranking the Extractor uses: how strongly, and how on-topic, a sentence expresses its aspect."""
+    return abs(e["score"]) * (0.5 + e["confidence"]) + 0.3 * e.get("similarity", 0.0)
+
+
 def heuristic_claims(side: str, evidence: list[Evidence], max_claims: int) -> list[Claim]:
     want_positive = side == "bull"
+    cands = [e for e in evidence if (e["score"] > 0.15 if want_positive else e["score"] < -0.15)]
+    # At most one claim per aspect and one aspect per sentence. A sentence that triggers several aspects
+    # ("Demand conditions are uncertain ...") is cited once, under the aspect it expresses most strongly;
+    # the other aspects fall back to their next-best sentence or are left out.
     picks: list[Evidence] = []
-    for aspect in ASPECTS:  # one strongest sentence per aspect first, then fill by strength
-        cand = [e for e in evidence if e["aspect"] == aspect and (e["score"] > 0.15 if want_positive else e["score"] < -0.15)]
-        if cand:
-            picks.append(max(cand, key=lambda e: abs(e["score"]) * (0.5 + e["confidence"])))
+    used_aspects: set[str] = set()
+    used_chunks: set[int] = set()
+    for e in sorted(cands, key=_strength, reverse=True):
+        if e["aspect"] in used_aspects or e["chunk_id"] in used_chunks:
+            continue
+        picks.append(e)
+        used_aspects.add(e["aspect"])
+        used_chunks.add(e["chunk_id"])
     picks = sorted(picks, key=lambda e: abs(e["score"]), reverse=True)[:max_claims]
     claims: list[Claim] = []
     for i, e in enumerate(picks, 1):
