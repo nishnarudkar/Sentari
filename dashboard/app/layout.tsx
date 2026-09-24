@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/drift">Drift monitor</Link>
             <Link href="/models">Models</Link>
             <span className="spacer" />
-            <span className="muted small">research tool · not investment advice</span>
+            <span className="muted small nav-note">research tool · not investment advice</span>
           </div>
         </nav>
         <div className="wrap">
