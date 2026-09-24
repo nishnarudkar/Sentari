@@ -1,0 +1,7 @@
+{
+  "name": "sentari-report-tools",
+  "private": true,
+  "description": "Builds report/Sentari_Project_Report.docx",
+  "scripts": { "build": "node build_report.js" },
+  "dependencies": { "docx": "^9.5.0" }
+}
