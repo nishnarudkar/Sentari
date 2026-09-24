@@ -274,15 +274,15 @@ add(table("Technology stack (planned in the specification vs. used)", ["Layer", 
 
 // 4 ---------------------------------------------------------------
 add(newChapter("Implementation"));
-add(P("The implementation is about 4,000 lines of Python across seven packages and 600 lines of TypeScript, with 55 automated tests (Table 4.1). This chapter describes each component in pipeline order."));
+add(P("The implementation is about 4,000 lines of Python across seven packages and 600 lines of TypeScript, with 58 automated tests (Table 4.1). This chapter describes each component in pipeline order."));
 add(table("Code base by package (lines including comments and blank lines)", ["Package", "Lines", "Responsibility"], [
   ["ingestion/", "499", "scrapers, normalisation, transcript parsing, idempotent pipeline"],
   ["absa_service/", "2,029", "preprocessing, aspect extraction, ten models, training, scoring, signals, registry, API, CLI"],
-  ["agents/", "661", "extractor, bull/bear, skeptic, judge, LangGraph graph, LLM backends"],
+  ["agents/", "686", "extractor, bull/bear, skeptic, judge, LangGraph graph, LLM backends"],
   ["storage/", "180", "SQLAlchemy schema, engine/session helpers, migration"],
   ["monitoring/, delivery/", "165", "drift monitor; digest rendering, SMTP and Slack delivery"],
   ["evaluation/", "546", "metrics, lexicon failure, grounding audit, signal validity, latency/cost, report"],
-  ["tests/", "551", "55 tests (unit, integration, API)"],
+  ["tests/", "586", "58 tests (unit, integration, API)"],
   ["dashboard/", "626", "Next.js pages, chart and drawer components, API client"],
 ], [1.6, 0.8, 4.4], { firstColBold: true }));
 
@@ -344,7 +344,7 @@ add(P("For a ticker and date range the Extractor loads all aspect scores and ran
 add(formula("rank = |score| × (0.5 + confidence) + 0.3 × cosine(chunk, aspect query)"));
 add(P("It keeps the top *k* = 4 positive and top 4 negative chunks per aspect, so both sides of the debate get material, and computes an aspect summary and the per-call Q&A deltas."));
 add(H3("Bull and Bear"));
-add(P("Each side builds the strongest case from evidence of its polarity and must cite chunk IDs for every claim. With an Anthropic API key the claims are written by Claude, prompted to use only the numbered evidence; without one, a deterministic backend composes claims directly from the strongest chunks. Claim IDs are prefixed `bl` and `br` so the two sides can never collide in the brief or the trace — a bug that the tests caught during development (Section 7.3)."));
+add(P("Each side builds the strongest case from evidence of its polarity and must cite chunk IDs for every claim. The offline backend makes at most one claim per aspect and cites each sentence at most once per side: candidates are taken in order of the Extractor's ranking, and a sentence that triggers several aspects is used only for the aspect it expresses most strongly. The Judge also merges claims from the same side that cite exactly the same sentences, which guards against an LLM restating one sentence under several aspects. With an Anthropic API key the claims are written by Claude, prompted to use only the numbered evidence; without one, a deterministic backend composes claims directly from the strongest chunks. Claim IDs are prefixed `bl` and `br` so the two sides can never collide in the brief or the trace — a bug that the tests caught during development (Section 7.3)."));
 add(H3("Skeptic — the grounding gate"));
 add(table("Skeptic checks, applied to every claim in order", ["Check", "Test", "On failure"], [
   ["1  Citation", "Every cited ID exists in the retrieved evidence", "rejected"],
@@ -394,7 +394,7 @@ add(H2("5.3  Grounded brief"));
 add(P("The brief page shows the stance, the confidence with its components, the summary, and the verified bull and bear claims by aspect. Every claim carries *src* chips; each opens the cited source sentence. Unverified claims, if any, are listed separately, and the number of rejected claims is stated."));
 add(shot("05_brief_top.png", "Brief for ACMX: stance, confidence breakdown and a summary in which every claim is cited."));
 add(shot("06_brief_bull_bear.png", "Verified bull and bear claims grouped by aspect."));
-add(note("**Observed weakness (Figure 5.5).** The same sentence is cited under several aspects — \"Demand conditions are uncertain …\" appears as the bear claim for guidance, demand *and* management tone, and \"Our management team is confident in the outlook\" as a guidance claim. The cause is that one sentence can trigger several aspects (*outlook* is a guidance trigger; *uncertain* a tone trigger) and each side picks the strongest sentence per aspect independently. The claims are correctly grounded, but the brief is repetitive and over-counts one sentence. Deduplicating claims by cited chunk is listed as future work."));
+add(note("**Fixed while preparing this report: repeated claims.** The first version of this brief cited one sentence (\"Demand conditions are uncertain …\") three times, as the bear claim for guidance, demand *and* management tone, because one sentence can trigger several aspects and each aspect picked its strongest sentence independently. Sentences are now cited at most once per side (Section 4.7). The ACMX brief shown here has 10 claims from 10 different sentences. The bear case lost its demand claim, because no other negative demand sentence exists, and gained a more specific tone claim (\"We are cautious about the tariff situation …\"). One imprecision remains: \"Our management team is confident in the outlook\" is filed under guidance because *outlook* is a guidance trigger."));
 add(shot("07_brief_citation_drawer.png", "Following a citation from the brief to its source sentence."));
 add(P("The audit trail (Figure 5.8) exposes the output of every agent. For the Skeptic it records, per claim, each check's result, the similarity and overlap values and the NLI probabilities — here 0.976 entailment for a quoted claim."));
 add(shot("08_brief_audit_trail.png", "Agent audit trail: the Skeptic's per-claim checks and NLI probabilities."));
@@ -406,7 +406,7 @@ add(shot("14_mlflow_runs.png", "MLflow experiment `sentari-absa-ladder` with one
 add(H2("5.5  Dark mode and small screens"));
 add(shot("11_dark_mode_ticker.png", "Ticker view in dark mode (NVLT)."));
 add(shot("12_mobile_watchlist.png", "Watchlist at phone width (390 px).", { width: 2.6 }));
-add(P("At 390 px the cards reflow correctly, but the navigation bar does not: the disclaimer text wraps into four lines and overflows the right edge (Figure 5.12). This is a known layout defect to fix."));
+add(P("At 390 px the cards reflow to a single column. The navigation bar wraps: the links stay on one line and the disclaimer moves to a line of its own. (An earlier version let the disclaimer overflow the right edge of the screen; it was fixed while preparing this report.)"));
 
 // 6 ---------------------------------------------------------------
 add(newChapter("Evaluation"));
@@ -483,7 +483,8 @@ add(H2("6.6  Latency and cost"));
 add(table("Measured latency", ["Operation", "Measured", "Notes"], [
   ["Score one sentence", "0.03 ms (rules) – 10.5 ms (FinBERT)", "CPU, gold-set average (Table 6.2)"],
   ["Generate one brief, offline agents", "0.79 s mean, 1.55 s max", "Rule-based model, heuristic Skeptic, 2 briefs"],
-  ["Generate one brief, NLI Skeptic", "4.9 s", "Includes loading the NLI model; first brief of the run"],
+  ["Generate one brief, NLI Skeptic", "0.4 – 2.5 s", "NLI model already loaded (NVLT, ACMX)"],
+  ["Load the NLI model", "4 s – 51 s", "One-off per process; varies with disk cache and Hugging Face hub checks"],
   ["Full daily run on the sample corpus", "84 s", "Fresh database; 5 documents, 88 chunks, FinBERT scoring, NLI Skeptic, 2 briefs, drift, digest; includes loading both models"],
   ["LLM tokens and cost per brief", "not measured", "Recorded per brief (tokens in/out) once an API key is configured"],
   ["Fine-tuning time", "CNN 10 s · BiLSTM 28 s · FinBERT 238 s", "CPU; FinBERT on 1,500 examples, 2 epochs"],
@@ -492,7 +493,7 @@ add(P("Cached briefs cost nothing: a second daily run with no new documents skip
 add(H2("6.7  Qualitative findings from the end-to-end run"));
 add(bullets([
   "**Q&A is weaker than the script.** On ACMX's first call the Q&A-minus-prepared delta was −1.15, driven by guidance (−1.99: \"raising our full-year guidance\" in the script, \"visibility beyond the third quarter is limited\" in the Q&A) and margins (−1.98: a 180 bp expansion in the script, input costs \"a headwind\" and tariffs \"difficult to predict\" in the Q&A). The signal behaves as designed on text written to exhibit it; whether it does so on real calls is the open question of Section 6.5.",
-  "**Repeated claims** across aspects in the brief (Section 5.3).",
+  "**Repeated claims** across aspects in the first version of the brief, now fixed (Section 5.3).",
   "**Over-confident transformer.** FinBERT assigned −1.00 with 100% confidence to *\"We are not able to say.\"* — a reasonable negative-tone reading, but the certainty is not warranted; confidence values are uncalibrated.",
   "**Mixed document types.** The top digest move (ACMX demand +0.15 → +0.99) compares a call with a 10-Q filed six days later; trajectories mix document types, which inflates moves.",
   "**Noisy drift alerts** on very small windows (Section 5.4).",
@@ -501,16 +502,16 @@ add(bullets([
 // 7 ---------------------------------------------------------------
 add(newChapter("Testing"));
 add(H2("7.1  Strategy"));
-add(P("Every test runs offline in about 20 seconds with no API keys: the LLM backend is pinned to the deterministic heuristic, the serving model to the rule-based model, and the `.env` loader is disabled, so results never depend on a developer's local files. Tests use in-memory SQLite, the bundled sample corpus and FastAPI's test client."));
-add(table("Automated tests by module (55 in total; one test is parametrised six ways)", ["Module", "Tests", "What is covered"], [
+add(P("Every test runs offline in about 30 seconds with no API keys: the LLM backend is pinned to the deterministic heuristic, the serving model to the rule-based model, and the `.env` loader is disabled, so results never depend on a developer's local files. Tests use in-memory SQLite, the bundled sample corpus and FastAPI's test client."));
+add(table("Automated tests by module (58 in total; one test is parametrised six ways)", ["Module", "Tests", "What is covered"], [
   ["test_ingestion.py", "6", "normalisation, abbreviation-aware splitting, speaker/section parsing, hashing, idempotent ingestion"],
   ["test_absa.py", "20", "negation scope, hedging, clause splitting, aspect triggers, spaCy vs. fallback agreement, directional scoring, VADER's failure, gold-set integrity, no gold leakage into training data, trainable model beats chance"],
-  ["test_agents.py", "9", "Skeptic accepts faithful claims; rejects fabricated numbers, bad citations and contradictions; full graph produces a cited brief with every agent in the trace; brief caching; rejected claims never reach the brief"],
+  ["test_agents.py", "12", "Skeptic accepts faithful claims; rejects fabricated numbers, bad citations and contradictions; full graph produces a cited brief with every agent in the trace; brief caching; rejected claims never reach the brief; no sentence cited twice by one side; Judge merges duplicate claims"],
   ["test_api_and_monitoring.py", "9", "PSI, drift alerting and idempotency, API validation and errors, daily run followed by every dashboard endpoint, cron-token enforcement"],
   ["test_evaluation.py", "6", "lexicon failure analysis, adversarial grounding thresholds, human-audit export/score round trip, signal-validity plumbing and null reporting, latency report"],
   ["test_env_loader.py", "5", "real environment wins over .env, empty values ignored, skip flag, parser edge cases, every variable documented"],
 ], [1.8, 0.6, 4.4], { firstColBold: true }));
-add(shot("15_terminal_tests.png", "Test run: 55 passed.", { width: 5.4 }));
+add(shot("15_terminal_tests.png", "Test run: 58 passed.", { width: 5.4 }));
 add(H2("7.2  Continuous integration"));
 add(P("A GitHub Actions workflow installs CPU-only PyTorch and the NLP models, runs the Python suite, and type-checks and builds the dashboard on every push and pull request. (Its results on GitHub were not inspected during this phase.)"));
 add(H2("7.3  Defects found and fixed"));
@@ -521,6 +522,8 @@ add(table("Defects found through testing and use", ["Defect", "Found by", "Fix"]
   ["Dashboard shipped a Next.js release with known security advisories", "`npm audit`", "Upgraded to Next.js 16 / React 19 (0 advisories)"],
   ["Daily CLI crashed printing the digest (▲ ▼ ⚠) on Windows consoles", "Running the pipeline for this report", "stdout reconfigured to UTF-8"],
   ["Each daily run appended duplicate drift reports", "Screenshot of the drift page for this report", "One report per (ticker, window); regression test added"],
+  ["Briefs repeated one sentence as several claims (one per aspect it triggered)", "Screenshot of the brief for this report", "Each sentence cited once per side; Judge merges duplicate claims; 3 tests added"],
+  ["Navigation bar overflowed the screen at phone width", "Phone-width screenshot for this report", "Nav wraps; disclaimer on its own line below 600 px"],
 ], [3.0, 1.9, 1.9]));
 
 // 8 ---------------------------------------------------------------
@@ -565,7 +568,7 @@ add(numbered([
   "**Signal validity** on the pilot with real forward returns; report the result whatever it is.",
   "**LLM agents** with an API key; human grounding audit of about 50 claims; measure tokens and cost per brief.",
   "**Deploy:** build the images, run on Cloud Run with Cloud SQL and the scheduler, then record the demo.",
-  "**Fixes found in this report:** deduplicate claims by cited chunk; raise the drift minimum sample; separate trajectories by document type; fix the mobile navigation bar.",
+  "**Remaining fixes found in this report:** raise the drift minimum sample; separate trajectories by document type; re-analysing aspect-less chunks on every run.",
 ]));
 
 // 11 --------------------------------------------------------------
@@ -573,7 +576,7 @@ add(newChapter("Limitations and Future Work"));
 add(H2("11.1  Limitations"));
 add(bullets([
   "**Evaluation data.** A 94-sentence self-written gold set, weak template labels and a synthetic corpus limit what the numbers can show; Section 6.2 lists the specific biases.",
-  "**Aspect handling.** One sentence can trigger several aspects and contribute the same claim to each; mixed clauses of one aspect are averaged, so a strong positive and a strong negative cancel to neutral; aspect detection is rule-based with no learned tagger.",
+  "**Aspect handling.** One sentence can still be *tagged* with several aspects (it is now cited only once per side); mixed clauses of one aspect are averaged, so a strong positive and a strong negative cancel to neutral; aspect detection is rule-based with no learned tagger, so a word like *outlook* can file a tone statement under guidance.",
   "**Grounding.** The heuristic Skeptic cannot detect polarity inversions; even with NLI, verification is only as good as the entailment model, and has not been tested on paraphrased LLM claims.",
   "**Calibration.** Model confidences (notably FinBERT's) and the brief confidence are not calibrated probabilities.",
   "**Monitoring.** Drift alerts on very small windows are noisy; trajectories mix document types.",
@@ -581,7 +584,7 @@ add(bullets([
 ]));
 add(H2("11.2  Future work"));
 add(bullets([
-  "A supervised aspect tagger trained on the real gold set, with claim deduplication across aspects.",
+  "A supervised aspect tagger trained on the real gold set, to reduce multi-aspect and mis-filed sentences.",
   "Calibrated confidence (temperature scaling on a real validation set) and per-aspect thresholds.",
   "Multiple training seeds and bootstrap confidence intervals for every ladder metric.",
   "pgvector or Qdrant approximate-nearest-neighbour retrieval over sentence-transformer embeddings for larger watchlists.",
@@ -690,7 +693,7 @@ add(table("Repository layout", ["Path", "Contents"], [
   ["data/", "sample/ (synthetic corpus), gold/gold.tsv (evaluation set)"],
   ["results/", "committed evaluation outputs quoted in this report"],
   ["report/", "this report, its figures and screenshots, and the scripts that regenerate them"],
-  ["tests/", "55 automated tests"],
+  ["tests/", "58 automated tests"],
   ["root", "Dockerfile, docker-compose.yml, dvc.yaml, .github/workflows/ci.yml, deploy/, .env.example, SETUP.md, CLAUDE.md"],
 ], [1.5, 5.3], { firstColBold: true }));
 add(P("**Development tooling.** Git and GitHub for version control; pytest; Playwright for the screenshots in this report; and Claude Code, an AI coding assistant, used during development (commits it helped write are marked as co-authored in the Git history)."));
