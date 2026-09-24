@@ -31,6 +31,16 @@ def test_drift_alerts_on_aspect_mix_shift(loaded):
     assert rep["alert"] and rep["psi_aspect_mix"] > 0.25
 
 
+def test_run_drift_is_idempotent(loaded):
+    from monitoring.drift import run_drift
+    from storage.models import DriftReport
+    session, _ = loaded
+    day = dt.date(2025, 8, 5)
+    run_drift(session, ["ACMX", "NVLT"], as_of=day)
+    run_drift(session, ["ACMX", "NVLT"], as_of=day)
+    assert session.query(DriftReport).count() == 3  # ACMX, NVLT, ALL - not 6
+
+
 def test_drift_insufficient_data_does_not_alert(session):
     rep = compute_drift(session, "NONE", as_of=dt.date(2025, 1, 1))
     assert rep["status"] == "insufficient_data" and not rep["alert"]

@@ -13,7 +13,7 @@ import math
 from collections import Counter
 from statistics import mean, pstdev
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from absa_service.schemas import ASPECTS
@@ -77,7 +77,11 @@ def run_drift(session: Session, tickers: list[str], as_of: dt.date | None = None
     reports = []
     for t in tickers + [None]:
         rep = compute_drift(session, t, as_of, model_name=model_name)
-        session.add(DriftReport(ticker=rep["ticker"], week_start=dt.date.fromisoformat(rep["week_start"]),
+        week_start = dt.date.fromisoformat(rep["week_start"])
+        # one report per (ticker, window): re-running the daily job replaces it instead of duplicating it
+        session.execute(delete(DriftReport).where(DriftReport.ticker == rep["ticker"],
+                                                  DriftReport.week_start == week_start))
+        session.add(DriftReport(ticker=rep["ticker"], week_start=week_start,
                                 psi_aspect_mix=rep["psi_aspect_mix"], confidence_shift=rep["confidence_shift"],
                                 alert=rep["alert"], detail={k: v for k, v in rep.items()
                                                             if k not in ("ticker", "week_start")}))
