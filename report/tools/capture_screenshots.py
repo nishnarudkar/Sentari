@@ -97,7 +97,10 @@ def main():
         shot(page, "04_source_drawer")
 
         # 5-6 brief
-        page.goto(f"{DASH}/briefs/1"); settle(page, "Summary", 1200)
+        import json
+        import urllib.request
+        latest = json.load(urllib.request.urlopen(f"{API}/tickers/ACMX/briefs", timeout=30))[0]["id"]
+        page.goto(f"{DASH}/briefs/{latest}"); settle(page, "Summary", 1200)
         shot(page, "05_brief_top")
         page.evaluate("() => { const h = [...document.querySelectorAll('h2')].find(e => e.textContent.startsWith('Bull vs bear'));"
                       " window.scrollTo(0, h.getBoundingClientRect().top + window.scrollY - 24); }")

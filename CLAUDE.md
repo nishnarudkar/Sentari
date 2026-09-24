@@ -7,7 +7,7 @@ Remote: `https://github.com/nishnarudkar/Sentari.git` (branch `main`). The user 
 ## Commands
 
 ```bash
-python -m pytest -q                                   # 55 tests, fully offline (~20 s)
+python -m pytest -q                                   # 58 tests, fully offline (~30 s)
 python -m absa_service.cli daily                      # ingest sample -> score -> briefs -> drift -> digest
 python -m absa_service.cli analyze "text"             # aspect sentiment for free text
 python -m absa_service.train [--transformer] [--transformer-zero-shot]   # model ladder -> artifacts/, MLflow, model_runs
