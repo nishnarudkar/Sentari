@@ -13,7 +13,15 @@ Imported by every Sentari package's `__init__`, so it runs before any module rea
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:  # noqa: S110
+        pass
 
 ROOT = Path(__file__).resolve().parent
 _loaded = False

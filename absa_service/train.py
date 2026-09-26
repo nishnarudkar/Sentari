@@ -99,9 +99,21 @@ def main(argv=None) -> dict:
         metrics.update({"latency_ms": gold_rep["latency_ms_per_item"], "train_seconds": train_s})
         if "trap_accuracy" in gold_rep:
             metrics["gold_trap_accuracy"] = gold_rep["trap_accuracy"]
+        model_artifact_path = None
+        if model.trainable:
+            p_file = models_dir / f"{model.name}.pkl"
+            p_pt = models_dir / f"{model.name}.pt"
+            p_dir = models_dir / model.name
+            if p_file.is_file():
+                model_artifact_path = str(p_file)
+            elif p_pt.is_file():
+                model_artifact_path = str(p_pt)
+            elif p_dir.is_dir():
+                model_artifact_path = str(p_dir)
+
         run_id = "" if args.no_mlflow else log_to_mlflow(
             model.name, {"rung": type(model).__module__.split(".")[-1], "n_train": len(train)}, metrics,
-            str(models_dir) if model.trainable and model.name in ("nb_tfidf", "dt_tfidf") else None)
+            model_artifact_path)
         with session_scope(factory) as s:
             register_run(s, model.name, {**metrics}, mlflow_run_id=run_id)
 

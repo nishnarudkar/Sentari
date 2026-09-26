@@ -23,6 +23,12 @@ def log_to_mlflow(name: str, params: dict, metrics: dict, artifacts_dir: str | N
                   tags: dict | None = None) -> str:
     try:
         import mlflow
+
+        if "DAGSHUB_USERNAME" in os.environ and "MLFLOW_TRACKING_USERNAME" not in os.environ:
+            os.environ["MLFLOW_TRACKING_USERNAME"] = os.environ["DAGSHUB_USERNAME"]
+        if "DAGSHUB_TOKEN" in os.environ and "MLFLOW_TRACKING_PASSWORD" not in os.environ:
+            os.environ["MLFLOW_TRACKING_PASSWORD"] = os.environ["DAGSHUB_TOKEN"]
+
         mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "file:./mlruns"))
         mlflow.set_experiment(EXPERIMENT)
         with mlflow.start_run(run_name=name) as run:
@@ -30,11 +36,15 @@ def log_to_mlflow(name: str, params: dict, metrics: dict, artifacts_dir: str | N
             mlflow.log_metrics({k: float(v) for k, v in metrics.items()})
             if tags:
                 mlflow.set_tags(tags)
-            if artifacts_dir and os.path.isdir(artifacts_dir):
-                mlflow.log_artifacts(artifacts_dir, artifact_path=name)
+            if artifacts_dir:
+                if os.path.isdir(artifacts_dir):
+                    mlflow.log_artifacts(artifacts_dir, artifact_path=name)
+                elif os.path.isfile(artifacts_dir):
+                    mlflow.log_artifact(artifacts_dir, artifact_path=name)
             return run.info.run_id
     except Exception as exc:  # noqa: BLE001
-        log.warning("MLflow logging failed for %s: %s", name, exc)
+        msg = str(exc).encode("ascii", errors="backslashreplace").decode("ascii")
+        log.warning("MLflow logging failed for %s: %s", name, msg)
         return ""
 
 
