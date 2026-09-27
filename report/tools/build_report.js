@@ -696,7 +696,7 @@ add(table("Repository layout", ["Path", "Contents"], [
   ["tests/", "58 automated tests"],
   ["root", "Dockerfile, docker-compose.yml, dvc.yaml, .github/workflows/ci.yml, deploy/, .env.example, SETUP.md, CLAUDE.md"],
 ], [1.5, 5.3], { firstColBold: true }));
-add(P("**Development tooling.** Git and GitHub for version control; pytest; Playwright for the screenshots in this report; and Claude Code, an AI coding assistant, used during development (commits it helped write are marked as co-authored in the Git history)."));
+add(P("**Development tooling.** Git and GitHub for version control; pytest; Playwright for the screenshots in this report; and Claude Code, an AI coding assistant, used during development."));
 
 // ------------------------------------------------------------------ document
 const header = new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: RULE, space: 4 } },

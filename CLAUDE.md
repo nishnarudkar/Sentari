@@ -2,7 +2,7 @@
 
 Final-year project: an earnings-call & filings intelligence platform (aspect-level sentiment + grounded bull/bear/skeptic/judge briefs). The spec is [project.md](project.md); measured results and limitations are in [README.md](README.md) and `results/`. **Research/decision-support only — never present output as investment advice.**
 
-Remote: `https://github.com/nishnarudkar/Sentari.git` (branch `main`). The user has authorised pushing all work there; commit in small logical steps.
+Remote: `https://github.com/nishnarudkar/Sentari.git` (branch `main`). The user has authorised pushing all work there; commit in small logical steps. **Do not add `Co-Authored-By: Claude …` trailers (or any Claude attribution) to commits or PRs** — the user removed Claude from the repo's contributors and rewrote history to drop them.
 
 ## Commands
 
