@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import datetime as dt
 import logging
+import os
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -15,7 +16,7 @@ import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ingestion.normalize import content_hash, normalize_text, parse_plain, parse_transcript
+from ingestion.normalize import content_hash, normalize_text, parse_plain, parse_segments, parse_transcript
 from ingestion.scrapers.base import RawDocument, Scraper
 from storage.models import Chunk, Document
 
@@ -32,23 +33,28 @@ class IngestStats:
     failures: list[str] = field(default_factory=list)
 
 
-def load_config(path: Path = CONFIG_PATH) -> dict:
+def load_config(path: Path | str | None = None) -> dict:
+    """Explicit path > SENTARI_CONFIG env var > the bundled sample config (scheduler_config.yaml)."""
+    path = Path(path or os.environ.get("SENTARI_CONFIG") or CONFIG_PATH)
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 def build_scrapers(names: list[str]) -> list[Scraper]:
+    from ingestion.scrapers.hf_transcripts import HfTranscriptScraper
     from ingestion.scrapers.news import NewsRssScraper
     from ingestion.scrapers.nse import NseScraper
     from ingestion.scrapers.sample import SampleScraper
     from ingestion.scrapers.sec_edgar import SecEdgarScraper
 
-    registry = {"sample": SampleScraper, "sec_edgar": SecEdgarScraper,
+    registry = {"sample": SampleScraper, "sec_edgar": SecEdgarScraper, "hf_transcripts": HfTranscriptScraper,
                 "news_rss": NewsRssScraper, "nse": NseScraper}
     return [registry[n]() for n in names if n in registry]
 
 
 def chunk_document(doc: RawDocument):
     if doc.doc_type == "transcript":
+        if doc.meta.get("segments"):  # speaker-segmented source (e.g. hf_transcripts)
+            return parse_segments(doc.meta["segments"])
         return parse_transcript(doc.text)
     section = "mdna" if doc.doc_type in ("10-K", "10-Q") else "body"
     return parse_plain(doc.text, section=section)
@@ -102,6 +108,8 @@ def ingest(session: Session, tickers: list[str], scrapers: list[Scraper],
 def run_from_config(session: Session, config: dict | None = None) -> IngestStats:
     cfg = config or load_config()
     since = None
-    if cfg.get("lookback_days"):
+    if cfg.get("since"):  # fixed start date, e.g. for a historical pilot
+        since = cfg["since"] if isinstance(cfg["since"], dt.date) else dt.date.fromisoformat(str(cfg["since"]))
+    elif cfg.get("lookback_days"):
         since = dt.date.today() - dt.timedelta(days=int(cfg["lookback_days"]))
     return ingest(session, cfg["watchlist"], build_scrapers(cfg["sources"]), since=since)

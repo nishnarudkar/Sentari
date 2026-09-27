@@ -116,3 +116,78 @@ def parse_plain(text: str, section: str = "body") -> list[ChunkDraft]:
     """Chunking for filings/news where there is no speaker structure."""
     text = normalize_text(text)
     return [ChunkDraft(idx=i, text=s, section=section) for i, s in enumerate(split_sentences(text))]
+
+
+# --------------------------------------------------------------------------- speaker-segmented transcripts
+QUESTION_INTRO = re.compile(
+    r"(?:first|next|following|last|final) question|question (?:comes|is coming) from|from the line of|"
+    r"(?:your|the) line is (?:now )?open|question-and-answer session|q\s*&\s*a (?:session|portion)|"
+    r"^\W*operator instructions\W*$",  # some sources replace the operator's question intros with this
+    re.IGNORECASE)
+HANDOFF = re.compile(
+    r"open (?:it |this |the (?:call|line|floor) )?(?:up )?(?:for|to) (?:your )?questions|"
+    r"(?:take|begin|start) (?:your |some |the )?questions|"
+    r"(?:move|go|turn it|turn the call|hand it|over) (?:on |back |over )?to (?:the )?(?:q\s*&\s*a|questions)",
+    re.IGNORECASE)
+MIN_PREPARED_SHARE = 0.12  # Q&A cannot start before this share of the call's text (skips opening housekeeping)
+
+
+def _is_operator(speaker: str) -> bool:
+    return speaker.strip().lower() in ("operator", "moderator", "conference operator", "coordinator")
+
+
+def find_qa_start(segments: list[dict]) -> int | None:
+    """Index of the first Q&A segment, or None if the call has no recognisable Q&A.
+
+    Q&A starts at the operator's first question introduction *after* management has spoken and at least
+    MIN_PREPARED_SHARE of the text has passed; the operator's opening housekeeping ("there will be a
+    question-and-answer session later") is ignored. Fallback for calls without an operator hand-off: the
+    segment after a company speaker opens the floor ("we'll now take your questions")."""
+    total = sum(len(s["text"]) for s in segments) or 1
+    seen_company, chars = False, 0
+    for i, seg in enumerate(segments):
+        operator = _is_operator(seg["speaker"])
+        if seen_company and chars / total >= MIN_PREPARED_SHARE:
+            if operator and QUESTION_INTRO.search(seg["text"]):
+                return i
+            if not operator and HANDOFF.search(seg["text"][-400:]):
+                return i + 1 if i + 1 < len(segments) else None
+        if not operator:
+            seen_company = True
+        chars += len(seg["text"])
+    return None
+
+
+def speaker_roles(segments: list[dict], qa_start: int | None) -> dict[int, str]:
+    """Label each segment's speaker: 'Operator', 'Analyst' or '' (company).
+
+    Analysts are the speakers who talk right after an operator segment in the Q&A (the operator introduces
+    them). Anyone who spoke in the prepared remarks is company, even if the operator later hands to them."""
+    prepared = {s["speaker"] for s in segments[:qa_start or len(segments)] if not _is_operator(s["speaker"])}
+    analysts: set[str] = set()
+    if qa_start is not None:
+        for prev, seg in zip(segments[qa_start - 1:], segments[qa_start:]):
+            if _is_operator(prev["speaker"]) and not _is_operator(seg["speaker"]) and seg["speaker"] not in prepared:
+                analysts.add(seg["speaker"])
+        if not any(_is_operator(s["speaker"]) for s in segments[qa_start:]):
+            # no operator in the Q&A: anyone who did not present is taken to be an analyst
+            analysts |= {s["speaker"] for s in segments[qa_start:] if s["speaker"] not in prepared}
+    roles = {}
+    for i, seg in enumerate(segments):
+        name = seg["speaker"]
+        roles[i] = "Operator" if _is_operator(name) else "Analyst" if name in analysts else ""
+    return roles
+
+
+def parse_segments(segments: list[dict]) -> list[ChunkDraft]:
+    """Chunk a speaker-segmented transcript ([{speaker, text}, ...]) without regex-parsing speaker names."""
+    qa_start = find_qa_start(segments)
+    roles = speaker_roles(segments, qa_start)
+    chunks: list[ChunkDraft] = []
+    for i, seg in enumerate(segments):
+        section = "qa" if qa_start is not None and i >= qa_start else "prepared"
+        role = roles[i]
+        speaker = "Operator" if role == "Operator" else f"{seg['speaker']} (Analyst)" if role else seg["speaker"]
+        for sent in split_sentences(normalize_text(seg["text"])):
+            chunks.append(ChunkDraft(idx=len(chunks), text=sent, section=section, speaker=speaker))
+    return chunks

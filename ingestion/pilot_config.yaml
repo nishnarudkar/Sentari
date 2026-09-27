@@ -1,0 +1,19 @@
+# Real 10-company pilot on public earnings-call transcripts (see ingestion/scrapers/hf_transcripts.py).
+#   1. python -m ingestion.scrapers.hf_transcripts AAPL MSFT JPM WMT JNJ XOM BA KO DIS NEE   (one-off, ~9 min)
+#   2. python -m absa_service.cli daily --config ingestion/pilot_config.yaml
+# Sectors: tech hardware, software, banking, retail, healthcare, energy, aerospace, staples, media, utilities.
+since: 2015-01-01            # historical window: ~40 calls per company for the signal-validity study
+sources:
+  - hf_transcripts           # kurry/sp500_earnings_transcripts, pinned revision (data ends May 2025)
+  # - sec_edgar              # add later; trajectories currently mix document types (see report ch. 11)
+watchlist:
+  - AAPL
+  - MSFT
+  - JPM
+  - WMT
+  - JNJ
+  - XOM
+  - BA
+  - KO
+  - DIS
+  - NEE

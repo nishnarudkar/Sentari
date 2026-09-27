@@ -23,7 +23,7 @@ def main(argv=None) -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(prog="sentari")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("daily")
+    dl = sub.add_parser("daily"); dl.add_argument("--config", help="ingestion config YAML (default: SENTARI_CONFIG or the sample config)")
     an = sub.add_parser("analyze"); an.add_argument("text"); an.add_argument("--model")
     br = sub.add_parser("brief"); br.add_argument("ticker"); br.add_argument("--force", action="store_true")
     args = ap.parse_args(argv)
@@ -43,7 +43,8 @@ def main(argv=None) -> None:
     with make_session_factory(engine)() as session:
         if args.cmd == "daily":
             from absa_service.orchestration import run_daily
-            out = run_daily(session)
+            from ingestion.pipeline import load_config
+            out = run_daily(session, config=load_config(args.config))
             print(json.dumps({k: v for k, v in out.items() if k != "digest"}, indent=2, default=str))
             print(out["digest"]["text"] if out["digest"] else "")
         elif args.cmd == "brief":

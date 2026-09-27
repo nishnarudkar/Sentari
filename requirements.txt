@@ -4,6 +4,7 @@ uvicorn>=0.29
 pydantic>=2.6
 SQLAlchemy>=2.0
 PyYAML>=6.0
+duckdb>=1.0              # hf_transcripts: pinned remote extraction + local subset
 python-dotenv>=1.0
 requests>=2.31
 httpx>=0.27

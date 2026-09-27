@@ -1,5 +1,11 @@
 # Data + model versioning with DVC:  dvc repro   (init once with `dvc init`; add a remote for team sharing)
 stages:
+  extract_transcripts:
+    cmd: python -m ingestion.scrapers.hf_transcripts AAPL MSFT JPM WMT JNJ XOM BA KO DIS NEE
+    deps:
+      - ingestion/scrapers/hf_transcripts.py
+    outs:
+      - data/transcripts/hf_subset.parquet
   train_ladder:
     cmd: python -m absa_service.train --transformer --transformer-zero-shot
     deps:
