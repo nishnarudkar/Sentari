@@ -5,6 +5,7 @@ import pytest
 os.environ["SENTARI_SKIP_DOTENV"] = "1"    # tests must never pick up a developer's local .env
 os.environ["SENTARI_LLM"] = "heuristic"   # never call an external LLM in tests
 os.environ["SENTARI_MODEL"] = "lm_directional"  # never depend on a locally trained/registry model
+os.environ["SENTARI_LEXICON"] = "seed"      # never depend on a locally downloaded LM dictionary
 os.environ.pop("SENTARI_NLI", None)
 
 

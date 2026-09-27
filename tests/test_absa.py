@@ -109,3 +109,12 @@ def test_metrics_report_structure():
     rep = classification_report(["positive", "negative", "neutral"], ["positive", "neutral", "neutral"])
     assert set(rep["per_class"]) == {"negative", "neutral", "positive"}
     assert 0 <= rep["macro_f1"] <= 1
+
+
+def test_official_lm_csv_excludes_removed_words(tmp_path):
+    from absa_service.models.lm_lexicon_data import load_lm_csv
+    csv_path = tmp_path / "Loughran-McDonald_MasterDictionary_test.csv"
+    csv_path.write_text("Word,Negative,Positive,Uncertainty,Litigious\n"
+                        "LOSS,2009,0,0,0\nBENEFIT,0,-2020,0,0\nGAIN,0,2009,0,0\nMAY,0,0,2009,0\n", encoding="utf-8")
+    lex = load_lm_csv(csv_path)
+    assert lex["negative"] == {"loss"} and lex["positive"] == {"gain"} and lex["uncertainty"] == {"may"}
