@@ -66,7 +66,8 @@ def split_sentences(text: str) -> list[str]:
     merged: list[str] = []
     for piece in pieces:
         if merged:
-            last_word = merged[-1].rstrip(".").split()[-1].lower().strip("\"'([") if merged[-1].split() else ""
+            words = merged[-1].rstrip(".").split()  # empty for a piece like "..."
+            last_word = words[-1].lower().strip("\"'([") if words else ""
             if merged[-1].endswith(".") and last_word in ABBREVIATIONS:
                 merged[-1] = f"{merged[-1]} {piece}"
                 continue

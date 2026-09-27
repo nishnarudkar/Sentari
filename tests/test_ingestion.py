@@ -24,6 +24,30 @@ def test_sentence_split_respects_abbreviations():
     assert sents[0].startswith("Acme Inc.")
 
 
+def test_sentence_split_handles_ellipsis_only_pieces():
+    assert split_sentences("... Well. Revenue grew.") == ["...", "Well.", "Revenue grew."]
+    assert split_sentences("...") == ["..."]
+
+
+def test_one_malformed_document_does_not_abort_ingestion(monkeypatch):
+    import datetime as dt
+    import ingestion.pipeline as P
+    from ingestion.scrapers.base import RawDocument
+    session = make_session()
+
+    class Two:
+        name = "two"
+        def fetch(self, ticker, since=None):
+            return [RawDocument(ticker, "news", dt.date(2025, 1, d), f"Bad document number {d} with enough text.")
+                    for d in (1, 2)]
+
+    real = P.chunk_document
+    monkeypatch.setattr(P, "chunk_document", lambda doc: (_ for _ in ()).throw(ValueError("boom"))
+                        if doc.doc_date.day == 1 else real(doc))
+    stats = P.ingest(session, ["ZZZ"], [Two()])
+    assert stats.new_documents == 1 and len(stats.failures) == 1 and "boom" in stats.failures[0]
+
+
 def test_transcript_sections_and_speakers():
     text = (
         "Operator: Welcome to the call.\n"

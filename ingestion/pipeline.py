@@ -100,7 +100,12 @@ def ingest(session: Session, tickers: list[str], scrapers: list[Scraper],
                         time.sleep(2 ** attempt)
             stats.fetched += len(docs)
             for doc in docs:
-                store_document(session, doc, stats)
+                try:
+                    with session.begin_nested():  # a malformed document is skipped, not fatal to the run
+                        store_document(session, doc, stats)
+                except Exception as exc:  # noqa: BLE001
+                    log.warning("skipping %s %s %s: %s", doc.ticker, doc.doc_type, doc.doc_date, exc)
+                    stats.failures.append(f"{scraper.name}:{doc.ticker}:{doc.doc_date}:{exc}")
     session.commit()
     return stats
 
