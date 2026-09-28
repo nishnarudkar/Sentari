@@ -113,6 +113,7 @@ def test_digest_compares_same_doc_type_and_needs_enough_mentions(monkeypatch):
         {"document_id": 4, "date": "2025-04-01", "doc_type": "transcript", "mean": 0.1, "n": 8},
     ]
     monkeypatch.setattr(D, "aspect_trajectory", lambda s, t, a, m=None: traj if a == "demand" else [])
+    monkeypatch.setattr(D, "latest_documents", lambda s, t: {3, 4})  # latest 10-Q and latest call
     moves = D.top_moves(None, ["T"])
     assert moves == [{"ticker": "T", "aspect": "demand", "from": 0.5, "to": 0.1, "change": -0.4,
                       "date": "2025-04-01", "document_id": 4}]
@@ -133,3 +134,12 @@ def test_quarterly_drift_uses_each_tickers_latest_document(loaded):
                                               window_days=40, baseline_days=365, min_obs=3)}
     # measured up to each company's own latest call, not the global date (which would leave both windows empty)
     assert reps["ACMX"]["n_current"] > 0 and reps["NVLT"]["n_current"] > 0
+
+
+def test_digest_ignores_moves_that_are_not_in_the_latest_document(monkeypatch):
+    import delivery.digest as D
+    traj = [{"document_id": 1, "date": "2023-01-01", "doc_type": "transcript", "mean": 0.9, "n": 5},
+            {"document_id": 2, "date": "2023-04-01", "doc_type": "transcript", "mean": -0.9, "n": 5}]
+    monkeypatch.setattr(D, "aspect_trajectory", lambda s, t, a, m=None: traj if a == "litigation" else [])
+    monkeypatch.setattr(D, "latest_documents", lambda s, t: {9})  # the latest call does not mention litigation
+    assert D.top_moves(None, ["T"]) == []

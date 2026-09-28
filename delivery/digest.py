@@ -21,16 +21,31 @@ DISCLAIMER = "Sentari is a research/decision-support tool. Not investment advice
 MIN_MENTIONS = 3
 
 
+def latest_documents(session: Session, ticker: str) -> set[int]:
+    """IDs of the ticker's most recent document of each type."""
+    from sqlalchemy import func, select
+    from storage.models import Document
+    newest = (select(Document.doc_type, func.max(Document.doc_date).label("d"))
+              .where(Document.ticker == ticker).group_by(Document.doc_type).subquery())
+    return set(session.scalars(select(Document.id).join(
+        newest, (Document.doc_type == newest.c.doc_type) & (Document.doc_date == newest.c.d))
+        .where(Document.ticker == ticker)))
+
+
 def top_moves(session: Session, tickers: list[str], n: int = 3, model_name: str | None = None,
               min_mentions: int = MIN_MENTIONS) -> list[dict]:
     moves = []
+    latest_ids: dict[str, set[int]] = {}
     for t in tickers:
         for a in ASPECTS:
             traj = [p for p in aspect_trajectory(session, t, a, model_name) if p["n"] >= min_mentions]
-            if not traj:
+            latest = latest_ids.get(t) or latest_documents(session, t)
+            latest_ids[t] = latest
+            # only a move *into* the company's latest document of that type is news; older ones are stale
+            last = next((p for p in reversed(traj) if p["document_id"] in latest), None)
+            if last is None:
                 continue
-            last = traj[-1]
-            same_type = [p for p in traj[:-1] if p["doc_type"] == last["doc_type"]]
+            same_type = [p for p in traj if p["doc_type"] == last["doc_type"] and p["date"] < last["date"]]
             if same_type:
                 prev = same_type[-1]
                 moves.append({"ticker": t, "aspect": a, "from": prev["mean"], "to": last["mean"],
