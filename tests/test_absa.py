@@ -118,3 +118,16 @@ def test_official_lm_csv_excludes_removed_words(tmp_path):
                         "LOSS,2009,0,0,0\nBENEFIT,0,-2020,0,0\nGAIN,0,2009,0,0\nMAY,0,0,2009,0\n", encoding="utf-8")
     lex = load_lm_csv(csv_path)
     assert lex["negative"] == {"loss"} and lex["positive"] == {"gain"} and lex["uncertainty"] == {"may"}
+
+
+def test_scoring_skips_analysed_documents_and_embeds_only_scored_chunks(loaded):
+    from sqlalchemy import func, select
+    from absa_service.scoring import score_new_chunks
+    from storage.models import AspectScore, Chunk
+    session, model = loaded
+    again = score_new_chunks(session, model)
+    assert again["chunks_seen"] == 0 and again["scores"] == 0  # nothing re-analysed on a re-run
+    scored = set(session.scalars(select(AspectScore.chunk_id)))
+    embedded = set(session.scalars(select(Chunk.id).where(Chunk.embedding.is_not(None))))
+    assert embedded == scored
+    assert session.scalar(select(func.count(Chunk.id))) > len(embedded)

@@ -47,7 +47,7 @@ def cohens_d(a: list[float], b: list[float]) -> float:
 
 
 def compute_drift(session: Session, ticker: str | None, as_of: dt.date, window_days: int = 7,
-                  baseline_days: int = 28, model_name: str | None = None) -> dict:
+                  baseline_days: int = 28, model_name: str | None = None, min_obs: int = MIN_OBS) -> dict:
     cur_start = as_of - dt.timedelta(days=window_days)
     base_start = cur_start - dt.timedelta(days=baseline_days)
     q = select(AspectScore).where(AspectScore.doc_date > base_start, AspectScore.doc_date <= as_of)
@@ -58,7 +58,7 @@ def compute_drift(session: Session, ticker: str | None, as_of: dt.date, window_d
     rows = list(session.scalars(q))
     cur = [r for r in rows if r.doc_date > cur_start]
     base = [r for r in rows if r.doc_date <= cur_start]
-    if len(cur) < MIN_OBS or len(base) < MIN_OBS:
+    if len(cur) < min_obs or len(base) < min_obs:
         return {"ticker": ticker or "ALL", "week_start": cur_start.isoformat(), "psi_aspect_mix": 0.0,
                 "confidence_shift": 0.0, "alert": False, "status": "insufficient_data",
                 "n_current": len(cur), "n_baseline": len(base)}
@@ -71,12 +71,22 @@ def compute_drift(session: Session, ticker: str | None, as_of: dt.date, window_d
             "mix_current": _mix(cur), "mix_baseline": _mix(base)}
 
 
-def run_drift(session: Session, tickers: list[str], as_of: dt.date | None = None,
-              model_name: str | None = None) -> list[dict]:
+def run_drift(session: Session, tickers: list[str], as_of: dt.date | None = None, model_name: str | None = None,
+              window_days: int = 7, baseline_days: int = 28, min_obs: int = MIN_OBS) -> list[dict]:
+    """Drift per ticker and for the whole watchlist ("ALL").
+
+    Defaults suit daily news/filings (last week vs the 4 weeks before). For quarterly earnings calls use e.g.
+    window_days=100, baseline_days=365 (latest call vs the previous year); each ticker is then measured up to
+    its own latest document, since companies report on different dates."""
     as_of = as_of or dt.date.today()
     reports = []
     for t in tickers + [None]:
-        rep = compute_drift(session, t, as_of, model_name=model_name)
+        t_as_of = as_of
+        if t is not None:
+            latest = session.scalar(select(AspectScore.doc_date).where(AspectScore.ticker == t, AspectScore.doc_date <= as_of)
+                                    .order_by(AspectScore.doc_date.desc()).limit(1))
+            t_as_of = latest or as_of
+        rep = compute_drift(session, t, t_as_of, window_days, baseline_days, model_name, min_obs)
         week_start = dt.date.fromisoformat(rep["week_start"])
         # one report per (ticker, window): re-running the daily job replaces it instead of duplicating it
         session.execute(delete(DriftReport).where(DriftReport.ticker == rep["ticker"],

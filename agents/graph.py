@@ -24,6 +24,15 @@ from agents.llm import LLM, get_llm
 from agents.state import BriefState
 from storage.models import AgentTrace, Brief, Document
 
+BRIEF_WINDOW_DAYS = 180  # latest call plus the one before it: a brief is about "now", not the whole history
+
+
+def default_window(session: Session, ticker: str, days: int = BRIEF_WINDOW_DAYS) -> tuple[dt.date, dt.date] | None:
+    """(start, end) for a ticker's brief: the `days` up to its latest document, or None if it has no documents."""
+    latest = session.scalar(select(Document.doc_date).where(Document.ticker == ticker)
+                            .order_by(Document.doc_date.desc()).limit(1))
+    return (latest - dt.timedelta(days=days), latest) if latest else None
+
 
 def build_graph(session: Session, llm: LLM, k: int = 4, model_name: str | None = None):
     """Compile the agent graph. Falls back to a plain sequential runner if langgraph is missing."""

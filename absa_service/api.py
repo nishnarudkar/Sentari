@@ -139,11 +139,11 @@ def brief_detail(brief_id: int, session: Session = Depends(get_session)):
 def generate(req: BriefRequest, session: Session = Depends(get_session)):
     from agents.graph import generate_brief
     ticker = req.ticker.upper()
-    bounds = session.execute(select(func.min(Document.doc_date), func.max(Document.doc_date))
-                             .where(Document.ticker == ticker)).one()
-    if bounds[0] is None:
+    from agents.graph import default_window
+    window = default_window(session, ticker)
+    if window is None:
         raise HTTPException(404, f"no documents for {ticker}")
-    brief = generate_brief(session, ticker, req.start or bounds[0], req.end or bounds[1], force=req.force)
+    brief = generate_brief(session, ticker, req.start or window[0], req.end or window[1], force=req.force)
     return _brief_json(brief)
 
 

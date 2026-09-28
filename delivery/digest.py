@@ -1,7 +1,9 @@
 """Daily digest: the top-3 aspect-sentiment moves across the watchlist, via email (SMTP) and/or Slack.
 
-Move = change in a ticker's per-document mean aspect score between its two most recent documents
-that mention the aspect. Delivery is opt-in via env vars; without them the digest is only rendered.
+Move = change in a ticker's per-document mean aspect score between its two most recent documents *of the same
+type* (call vs call, 10-Q vs 10-Q) that each mention the aspect at least MIN_MENTIONS times - a mean over one
+or two sentences swings wildly and made rarely-mentioned aspects (litigation) dominate the digest.
+Delivery is opt-in via env vars; without them the digest is only rendered.
 """
 from __future__ import annotations
 
@@ -16,15 +18,21 @@ from absa_service.schemas import ASPECTS
 from absa_service.signals import aspect_trajectory
 
 DISCLAIMER = "Sentari is a research/decision-support tool. Not investment advice."
+MIN_MENTIONS = 3
 
 
-def top_moves(session: Session, tickers: list[str], n: int = 3, model_name: str | None = None) -> list[dict]:
+def top_moves(session: Session, tickers: list[str], n: int = 3, model_name: str | None = None,
+              min_mentions: int = MIN_MENTIONS) -> list[dict]:
     moves = []
     for t in tickers:
         for a in ASPECTS:
-            traj = aspect_trajectory(session, t, a, model_name)
-            if len(traj) >= 2:
-                prev, last = traj[-2], traj[-1]
+            traj = [p for p in aspect_trajectory(session, t, a, model_name) if p["n"] >= min_mentions]
+            if not traj:
+                continue
+            last = traj[-1]
+            same_type = [p for p in traj[:-1] if p["doc_type"] == last["doc_type"]]
+            if same_type:
+                prev = same_type[-1]
                 moves.append({"ticker": t, "aspect": a, "from": prev["mean"], "to": last["mean"],
                               "change": round(last["mean"] - prev["mean"], 3), "date": last["date"],
                               "document_id": last["document_id"]})

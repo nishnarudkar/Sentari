@@ -48,13 +48,12 @@ def main(argv=None) -> None:
             print(json.dumps({k: v for k, v in out.items() if k != "digest"}, indent=2, default=str))
             print(out["digest"]["text"] if out["digest"] else "")
         elif args.cmd == "brief":
-            from agents.graph import generate_brief
+            from agents.graph import default_window, generate_brief
             t = args.ticker.upper()
-            lo, hi = session.execute(select(func.min(Document.doc_date), func.max(Document.doc_date))
-                                     .where(Document.ticker == t)).one()
-            if lo is None:
+            window = default_window(session, t)
+            if window is None:
                 raise SystemExit(f"no documents for {t}; run `daily` first")
-            b = generate_brief(session, t, lo, hi, force=args.force)
+            b = generate_brief(session, t, *window, force=args.force)
             print(json.dumps(b.body, indent=2, default=str))
 
 

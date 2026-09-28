@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from sqlalchemy import select
+from sqlalchemy import select, true
 from sqlalchemy.orm import Session
 
 from absa_service.aspect_extraction import extract_mentions
@@ -49,20 +49,22 @@ def is_scoreable(chunk: Chunk) -> bool:
     return True
 
 
-def score_new_chunks(session: Session, model: SentimentModel, limit: int | None = None) -> dict:
-    """Embed + score every chunk that has no score/embedding yet for this model. Idempotent."""
-    embedder = get_embedder()
-    scored_ids = set(session.scalars(select(AspectScore.chunk_id).where(AspectScore.model_name == model.name)))
-    q = select(Chunk, Document).join(Document, Chunk.document_id == Document.id).order_by(Chunk.id)
+def score_new_chunks(session: Session, model: SentimentModel) -> dict:
+    """Score every not-yet-analysed document with `model`, then embed the chunks that carry aspect scores.
+
+    A document counts as analysed once this model has scored any of its chunks (documents are scored in one
+    pass), so chunks without aspect mentions are not re-analysed on every run. Only chunks with aspect scores
+    are embedded: they are the only ones the Extractor retrieves, and embedding every sentence of a real call
+    corpus multiplied the database size (~75% of sentences carry no aspect). Idempotent."""
+    done_docs = set(session.scalars(
+        select(Chunk.document_id).join(AspectScore, AspectScore.chunk_id == Chunk.id)
+        .where(AspectScore.model_name == model.name).distinct()))
+    q = (select(Chunk, Document).join(Document, Chunk.document_id == Document.id)
+         .where(Document.id.not_in(done_docs) if done_docs else true()).order_by(Chunk.id))
     stats = {"chunks_seen": 0, "chunks_scored": 0, "scores": 0, "embedded": 0}
-    pending_embed: list[Chunk] = []
     for chunk, doc in session.execute(q):
         stats["chunks_seen"] += 1
-        if chunk.embedding is None:
-            pending_embed.append(chunk)
-        if chunk.id in scored_ids or not is_scoreable(chunk):
-            continue
-        if limit is not None and stats["chunks_scored"] >= limit:
+        if not is_scoreable(chunk):
             continue
         results = analyze_sentence(model, chunk.text)
         stats["chunks_scored"] += 1
@@ -73,10 +75,14 @@ def score_new_chunks(session: Session, model: SentimentModel, limit: int | None 
                 ticker=doc.ticker, doc_date=doc.doc_date, section=chunk.section,
             ))
             stats["scores"] += 1
-    if pending_embed:
-        vecs = embedder.embed([c.text for c in pending_embed])
-        for c, v in zip(pending_embed, vecs):
-            c.embedding = [round(float(x), 5) for x in v]
-        stats["embedded"] = len(pending_embed)
+    session.flush()
+    pending = list(session.scalars(select(Chunk).where(
+        Chunk.embedding.is_(None), Chunk.id.in_(select(AspectScore.chunk_id).distinct())).order_by(Chunk.id)))
+    embedder = get_embedder()
+    for i in range(0, len(pending), 2000):
+        batch = pending[i:i + 2000]
+        for c, v in zip(batch, embedder.embed([c.text for c in batch])):
+            c.embedding = [round(float(x), 4) for x in v]
+    stats["embedded"] = len(pending)
     session.commit()
     return stats

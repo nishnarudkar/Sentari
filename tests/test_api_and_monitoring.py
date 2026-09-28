@@ -102,3 +102,34 @@ def test_cron_token_enforced(client, monkeypatch):
     monkeypatch.setenv("SENTARI_CRON_TOKEN", "s3cret")
     assert client.post("/run/daily").status_code == 401
     assert client.post("/run/daily", headers={"X-Cron-Token": "s3cret"}).status_code == 200
+
+
+def test_digest_compares_same_doc_type_and_needs_enough_mentions(monkeypatch):
+    import delivery.digest as D
+    traj = [
+        {"document_id": 1, "date": "2025-01-01", "doc_type": "transcript", "mean": 0.5, "n": 10},
+        {"document_id": 2, "date": "2025-02-01", "doc_type": "transcript", "mean": -0.9, "n": 1},   # too few mentions
+        {"document_id": 3, "date": "2025-03-01", "doc_type": "10-Q", "mean": -0.8, "n": 12},        # other doc type
+        {"document_id": 4, "date": "2025-04-01", "doc_type": "transcript", "mean": 0.1, "n": 8},
+    ]
+    monkeypatch.setattr(D, "aspect_trajectory", lambda s, t, a, m=None: traj if a == "demand" else [])
+    moves = D.top_moves(None, ["T"])
+    assert moves == [{"ticker": "T", "aspect": "demand", "from": 0.5, "to": 0.1, "change": -0.4,
+                      "date": "2025-04-01", "document_id": 4}]
+
+
+def test_brief_window_covers_recent_documents_only(loaded):
+    from agents.graph import default_window
+    session, _ = loaded
+    start, end = default_window(session, "ACMX", days=30)
+    assert end == dt.date(2025, 7, 30) and start == dt.date(2025, 6, 30)
+    assert default_window(session, "NOPE") is None
+
+
+def test_quarterly_drift_uses_each_tickers_latest_document(loaded):
+    from monitoring.drift import run_drift
+    session, _ = loaded
+    reps = {r["ticker"]: r for r in run_drift(session, ["ACMX", "NVLT"], as_of=dt.date(2025, 12, 31),
+                                              window_days=40, baseline_days=365, min_obs=3)}
+    # measured up to each company's own latest call, not the global date (which would leave both windows empty)
+    assert reps["ACMX"]["n_current"] > 0 and reps["NVLT"]["n_current"] > 0

@@ -8,7 +8,7 @@ from sqlalchemy import func, select
 
 from absa_service.scoring import score_new_chunks
 from absa_service.serving import get_model
-from agents.graph import generate_brief
+from agents.graph import BRIEF_WINDOW_DAYS, default_window, generate_brief
 from agents.llm import get_llm
 from delivery.digest import deliver
 from ingestion.pipeline import load_config, run_from_config
@@ -27,16 +27,15 @@ def run_daily(session, config: dict | None = None, model_name: str | None = None
     briefs = []
     llm = get_llm()
     for ticker in cfg["watchlist"]:
-        bounds = session.execute(select(func.min(Document.doc_date), func.max(Document.doc_date))
-                                 .where(Document.ticker == ticker)).one()
-        if bounds[0] is None:
+        window = default_window(session, ticker, int(cfg.get("brief_window_days", BRIEF_WINDOW_DAYS)))
+        if window is None:
             continue
         # fingerprinting inside generate_brief makes this a no-op unless new data arrived
-        brief = generate_brief(session, ticker, bounds[0], bounds[1], llm=llm, model_name=model.name)
+        brief = generate_brief(session, ticker, *window, llm=llm, model_name=model.name)
         briefs.append({"ticker": ticker, "brief_id": brief.id, "confidence": brief.confidence})
 
     latest = session.scalar(select(func.max(Document.doc_date))) or dt.date.today()
-    drift = run_drift(session, cfg["watchlist"], as_of=latest, model_name=model.name)
+    drift = run_drift(session, cfg["watchlist"], as_of=latest, model_name=model.name, **(cfg.get("drift") or {}))
     digest = deliver(session, cfg["watchlist"], [d for d in drift if d["alert"]]) if send_digest else None
     return {"ingest": ingest_stats.__dict__, "scoring": score_stats, "briefs": briefs, "drift": drift,
             "digest": digest, "model": model.name}

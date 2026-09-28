@@ -3,6 +3,11 @@
 #   2. python -m absa_service.cli daily --config ingestion/pilot_config.yaml
 # Sectors: tech hardware, software, banking, retail, healthcare, energy, aerospace, staples, media, utilities.
 since: 2015-01-01            # historical window: ~40 calls per company for the signal-validity study
+brief_window_days: 180      # a brief covers the latest call and the one before it
+drift:                       # quarterly cadence: latest call vs the previous year, per company
+  window_days: 100
+  baseline_days: 365
+  min_obs: 30                # below this many scores per window, report "insufficient data" instead of noise
 sources:
   - hf_transcripts           # kurry/sp500_earnings_transcripts, pinned revision (data ends May 2025)
   # - sec_edgar              # add later; trajectories currently mix document types (see report ch. 11)
