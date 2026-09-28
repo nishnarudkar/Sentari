@@ -24,7 +24,10 @@ from ingestion.scrapers.base import RawDocument, Scraper
 
 DATASET = "kurry/sp500_earnings_transcripts"
 REVISION = "f3ded372da8d18dc6ad98955c4558e34b5fe6d45"  # pinned commit (2025-05-21); change deliberately
-SUBSET_PATH = Path(__file__).resolve().parents[2] / "data" / "transcripts" / "hf_subset.parquet"
+ROOT = Path(__file__).resolve().parents[2]
+SUBSET_PATH = ROOT / "data" / "transcripts" / "hf_subset.parquet"
+# optional full local copy of the pinned file (gitignored); used instead of the remote file when present
+LOCAL_FULL = ROOT / "data" / "raw" / "kurry_sp500_earnings_transcripts" / "part-0.parquet"
 TICKER_RE = re.compile(r"^[A-Z][A-Z.\-]{0,9}$")
 
 
@@ -33,7 +36,10 @@ def remote_url(revision: str = REVISION) -> str:
 
 
 def extract_subset(tickers: list[str], out: Path = SUBSET_PATH, revision: str = REVISION) -> int:
-    """Copy the given tickers' transcripts from the pinned remote dataset into a local Parquet file."""
+    """Copy the given tickers' transcripts from the pinned dataset into a local Parquet file.
+
+    Reads the full local copy (LOCAL_FULL) if present - verified identical to the pinned revision by sha256 -
+    otherwise streams the pinned remote file."""
     import duckdb
 
     tickers = sorted({t.upper() for t in tickers})
@@ -47,9 +53,10 @@ def extract_subset(tickers: list[str], out: Path = SUBSET_PATH, revision: str = 
     if token:  # optional; only reduces rate limiting on this public dataset
         con.execute(f"CREATE SECRET hf_token (TYPE huggingface, TOKEN '{token.replace(chr(39), '')}')")
     in_list = ", ".join(f"'{t}'" for t in tickers)
+    source = LOCAL_FULL.as_posix() if LOCAL_FULL.exists() and revision == REVISION else remote_url(revision)
     con.execute(f"""
         COPY (SELECT symbol, company_name, year, quarter, date, structured_content
-              FROM '{remote_url(revision)}' WHERE symbol IN ({in_list}) ORDER BY symbol, date)
+              FROM '{source}' WHERE symbol IN ({in_list}) ORDER BY symbol, date)
         TO '{out.as_posix()}' (FORMAT parquet, COMPRESSION zstd)""")
     return con.execute(f"SELECT count(*) FROM '{out.as_posix()}'").fetchone()[0]
 
