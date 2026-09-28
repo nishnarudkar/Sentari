@@ -24,3 +24,4 @@ dashboard/next-env.d.ts
 !.env.example
 data/lexicons/*.csv
 data/transcripts/
+data/annotation/
