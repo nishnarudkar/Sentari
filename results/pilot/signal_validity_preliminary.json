@@ -1,0 +1,340 @@
+{
+  "status": "PRELIMINARY - models not yet validated on real sentences",
+  "models": {
+    "lm_directional": {
+      "n_events": 374,
+      "horizons": {
+        "car_0_1": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.074,
+              "spearman_p": 0.1601,
+              "pearson_r": -0.064,
+              "bootstrap_ci95_spearman": [
+                -0.179,
+                0.03
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": 0.129,
+              "spearman_p": 0.0125,
+              "pearson_r": 0.127,
+              "bootstrap_ci95_spearman": [
+                0.032,
+                0.228
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": 0.134,
+              "spearman_p": 0.0094,
+              "pearson_r": 0.128,
+              "bootstrap_ci95_spearman": [
+                0.033,
+                0.232
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0223,
+            "delta_coef": -0.01095,
+            "doc_level_coef": 0.0419,
+            "delta_p": 0.4058,
+            "doc_level_p": 0.0705
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0369,
+            "delta_coef": -0.00349,
+            "doc_level_coef": 0.04964,
+            "eps_rev_coef": 0.01635,
+            "delta_p": 0.7821,
+            "doc_level_p": 0.0329,
+            "eps_rev_p": 0.1549
+          },
+          "delta_p_bonferroni": 1.0
+        },
+        "car_0_4": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.07,
+              "spearman_p": 0.1868,
+              "pearson_r": -0.065,
+              "bootstrap_ci95_spearman": [
+                -0.173,
+                0.037
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": 0.149,
+              "spearman_p": 0.0039,
+              "pearson_r": 0.119,
+              "bootstrap_ci95_spearman": [
+                0.051,
+                0.248
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": 0.131,
+              "spearman_p": 0.0113,
+              "pearson_r": 0.114,
+              "bootstrap_ci95_spearman": [
+                0.024,
+                0.233
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0219,
+            "delta_coef": -0.0114,
+            "doc_level_coef": 0.05273,
+            "delta_p": 0.4606,
+            "doc_level_p": 0.0384
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0422,
+            "delta_coef": -0.00211,
+            "doc_level_coef": 0.06236,
+            "eps_rev_coef": 0.02189,
+            "delta_p": 0.8829,
+            "doc_level_p": 0.0168,
+            "eps_rev_p": 0.0916
+          },
+          "delta_p_bonferroni": 1.0
+        },
+        "drift_2_11": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.008,
+              "spearman_p": 0.8806,
+              "pearson_r": -0.001,
+              "bootstrap_ci95_spearman": [
+                -0.111,
+                0.094
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": -0.089,
+              "spearman_p": 0.0845,
+              "pearson_r": -0.078,
+              "bootstrap_ci95_spearman": [
+                -0.185,
+                0.013
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": -0.093,
+              "spearman_p": 0.0723,
+              "pearson_r": -0.1,
+              "bootstrap_ci95_spearman": [
+                -0.194,
+                0.011
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0272,
+            "delta_coef": -0.00527,
+            "doc_level_coef": -0.0094,
+            "delta_p": 0.6412,
+            "doc_level_p": 0.6685
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0467,
+            "delta_coef": 0.00205,
+            "doc_level_coef": -0.01011,
+            "eps_rev_coef": 0.027,
+            "delta_p": 0.8562,
+            "doc_level_p": 0.6422,
+            "eps_rev_p": 0.089
+          },
+          "delta_p_bonferroni": 1.0
+        }
+      },
+      "first_event": "2016-01-14",
+      "last_event": "2025-05-07"
+    },
+    "finbert_ft": {
+      "n_events": 374,
+      "horizons": {
+        "car_0_1": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.034,
+              "spearman_p": 0.5184,
+              "pearson_r": -0.022,
+              "bootstrap_ci95_spearman": [
+                -0.14,
+                0.071
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": 0.126,
+              "spearman_p": 0.0151,
+              "pearson_r": 0.141,
+              "bootstrap_ci95_spearman": [
+                0.021,
+                0.221
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": 0.117,
+              "spearman_p": 0.0238,
+              "pearson_r": 0.114,
+              "bootstrap_ci95_spearman": [
+                0.011,
+                0.217
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0306,
+            "delta_coef": -0.00357,
+            "doc_level_coef": 0.04178,
+            "delta_p": 0.6871,
+            "doc_level_p": 0.0053
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0417,
+            "delta_coef": -0.00232,
+            "doc_level_coef": 0.03964,
+            "eps_rev_coef": 0.01501,
+            "delta_p": 0.7975,
+            "doc_level_p": 0.0085,
+            "eps_rev_p": 0.1775
+          },
+          "delta_p_bonferroni": 1.0
+        },
+        "car_0_4": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.029,
+              "spearman_p": 0.5822,
+              "pearson_r": -0.013,
+              "bootstrap_ci95_spearman": [
+                -0.134,
+                0.076
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": 0.172,
+              "spearman_p": 0.0009,
+              "pearson_r": 0.153,
+              "bootstrap_ci95_spearman": [
+                0.066,
+                0.269
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": 0.135,
+              "spearman_p": 0.0088,
+              "pearson_r": 0.108,
+              "bootstrap_ci95_spearman": [
+                0.033,
+                0.235
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0345,
+            "delta_coef": -0.00041,
+            "doc_level_coef": 0.05524,
+            "delta_p": 0.9679,
+            "doc_level_p": 0.0008
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0498,
+            "delta_coef": 0.00063,
+            "doc_level_coef": 0.05204,
+            "eps_rev_coef": 0.01995,
+            "delta_p": 0.9512,
+            "doc_level_p": 0.0019,
+            "eps_rev_p": 0.1108
+          },
+          "delta_p_bonferroni": 1.0
+        },
+        "drift_2_11": {
+          "spearman": {
+            "delta": {
+              "n": 361,
+              "spearman_rho": -0.006,
+              "spearman_p": 0.9032,
+              "pearson_r": 0.024,
+              "bootstrap_ci95_spearman": [
+                -0.114,
+                0.097
+              ]
+            },
+            "doc_level": {
+              "n": 374,
+              "spearman_rho": -0.013,
+              "spearman_p": 0.7948,
+              "pearson_r": -0.017,
+              "bootstrap_ci95_spearman": [
+                -0.112,
+                0.091
+              ]
+            },
+            "prepared": {
+              "n": 374,
+              "spearman_rho": -0.012,
+              "spearman_p": 0.8169,
+              "pearson_r": -0.062,
+              "bootstrap_ci95_spearman": [
+                -0.113,
+                0.087
+              ]
+            }
+          },
+          "ols": {
+            "n": 361,
+            "r2": 0.0275,
+            "delta_coef": 0.0028,
+            "doc_level_coef": 0.0081,
+            "delta_p": 0.7083,
+            "doc_level_p": 0.5904
+          },
+          "ols_with_eps_control": {
+            "n": 337,
+            "r2": 0.0468,
+            "delta_coef": 0.00441,
+            "doc_level_coef": 0.00128,
+            "eps_rev_coef": 0.02635,
+            "delta_p": 0.5702,
+            "doc_level_p": 0.9322,
+            "eps_rev_p": 0.1079
+          },
+          "delta_p_bonferroni": 1.0
+        }
+      },
+      "first_event": "2016-01-14",
+      "last_event": "2025-05-07"
+    }
+  },
+  "n_tests_for_bonferroni": 6,
+  "eps_control_available": true,
+  "interpretation": "No delta coefficient survives Bonferroni correction for 6 tests: no evidence (yet) that the prepared-vs-Q&A gap predicts market-adjusted returns in this pilot. Report as a null result pending model validation."
+}
