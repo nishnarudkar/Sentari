@@ -13,7 +13,7 @@ function MixBars({ cur, base }: { cur?: Record<string, number>; base?: Record<st
           <div className="bar" style={{ flex: 1 }}><i style={{ width: `${(cur[a] || 0) * 100}%` }} /></div>
         </div>
       ))}
-      <div className="muted small">grey = baseline mix · blue = current week</div>
+      <div className="muted small">grey = baseline mix · blue = current window</div>
     </div>
   );
 }
@@ -26,7 +26,7 @@ export default function Drift() {
     <>
       <h1 style={{ marginTop: 22 }}>Drift monitor</h1>
       <div className="muted">
-        Week-over-week shift in the aspect-mention mix (PSI) and model confidence (Cohen’s d) per ticker — a proxy for the ABSA
+        Shift between the current window and its baseline (weekly for news, quarterly for earnings calls) in the aspect-mention mix (PSI) and model confidence (Cohen’s d) per ticker — a proxy for the ABSA
         model degrading or the input data changing character. Alerts: PSI &gt; 0.25 or |d| &gt; 0.8.
       </div>
       {err && <div className="err">{err}</div>}

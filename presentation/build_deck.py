@@ -1,7 +1,7 @@
 """Build presentation/Sentari_Presentation.pptx on the RAIT / D Y Patil template.
 
-    1. base deck: the template with its content slide (slide3.xml) duplicated 9x, made with the pptx skill:
-         unzip template.pptx -> work/;  add_slide.py work/ slide3.xml  (x9);  zip work/ -> base.pptx
+    1. base deck: the template with its content slide (slide3.xml) duplicated 11x, made with the pptx skill:
+         unzip template.pptx -> work/;  add_slide.py work/ slide3.xml  (x11);  zip work/ -> base.pptx
     2. python presentation/make_diagrams.py            (architecture + agent diagrams)
     3. python presentation/capture_pilot_screens.py    (needs the API + dashboard running on the pilot DB)
     4. python presentation/build_deck.py base.pptx
@@ -229,7 +229,7 @@ def title_slide(s):
 def outline(s):
     header(s, 2, "Outline")
     items = ["Problem & Objectives", "System Architecture", "Aspect-Based Sentiment Pipeline",
-             "Model Ladder & Lexicon Failure", "Grounded Multi-Agent Briefs", "Dashboard on Real Data",
+             "Model Ladder & Lexicon Failure", "Grounded Multi-Agent Briefs", "Website Walkthrough",
              "Real-Data Pilot & Signal Study", "Conclusion & Future Work", "References"]
     for i, item in enumerate(items):
         col, row = divmod(i, 5)
@@ -419,25 +419,70 @@ def agents(s):
              "Synthetic corruptions of verbatim claims are the easy case; a human audit of LLM-written claims is not yet done.")
 
 
-def dashboard(s):
-    header(s, 8, "Dashboard on Real Data")
-    for i, (img, cap) in enumerate([("pilot_ba_trajectories_crop.png", "Six aspect trajectories for Boeing, 2015–2025 (prepared vs Q&A lines)"),
-                                    ("pilot_ba_brief_crop.png", "Boeing brief (Oct 2024 – Apr 2025): every claim links to its source")]):
-        x = 0.45 + i * 4.62
-        picture(s, ASSETS / img, x, 1.42, w=4.45)
-        text(s, x, 3.85, 4.45, 0.45, [cap], size=11, color=GREY, align=PP_ALIGN.CENTER)
-    feats = [("Watchlist & top moves", "latest call per company, largest aspect changes"),
-             ("Drill-down", "chart point → sentences → source in context → model verdict"),
-             ("Monitoring", "quarterly drift (PSI), model registry, daily digest")]
-    for i, (a, b) in enumerate(feats):
-        f = box(s, 0.45 + i * 3.07, 4.55, 2.95, 1.1, fill=ROSE)
-        box_text(f, [{"t": a, "b": True, "c": MAROON, "s": 13}, {"t": b, "s": 11, "c": GREY}])
-    notes(s, "Screenshots from the real 10-company pilot (not the synthetic demo data). Next.js 16 dashboard over the "
-             "FastAPI read API; dark mode and phone widths supported.")
+def shot_pair(s, items, y=1.42, w=4.45, max_h=3.3):
+    """Two screenshots side by side (same height), each with a caption and bullets on a shared baseline."""
+    pics = []
+    for i, (img, _, _) in enumerate(items):
+        pic = picture(s, ASSETS / img, 0.45 + i * 4.65, y, w=w)
+        if Emu(pic.height).inches > max_h:  # cap height, keep aspect ratio
+            ratio = max_h / Emu(pic.height).inches
+            pic.height, pic.width = Inches(max_h), Emu(int(pic.width * ratio))
+        pics.append(pic)
+    bottom = y + max(Emu(p.height).inches for p in pics)
+    for i, (pic, (_, cap, pts)) in enumerate(zip(pics, items)):
+        x = 0.45 + i * 4.65
+        pic.left = Emu(int(Inches(x + w / 2) - pic.width / 2))  # centre in its column
+        text(s, x, bottom + 0.08, w, 0.34, [{"t": cap, "b": True, "c": MAROON}], size=13)
+        if pts:
+            text(s, x, bottom + 0.44, w, 1.4, [{"t": t, "bullet": True} for t in pts], size=12, space_after=4)
+
+
+def website_overview(s):
+    header(s, 8, "Website: Watchlist & Trends")
+    shot_pair(s, [
+        ("pilot_watchlist_crop.png", "Watchlist — 10 real companies",
+         ["Latest call per company: six aspect scores and the brief's stance", "Top aspect moves across the watchlist",
+          "⚠ marks aspects where the Q&A ran well below the script"]),
+        ("pilot_ba_trajectories_crop.png", "Company view — Boeing, 2015–2025",
+         ["One chart per aspect across ~40 quarterly calls", "Green / red dashed lines: prepared remarks vs Q&A",
+          "Click any point to see the sentences behind it"]),
+    ])
+    notes(s, "Live screenshots of the Next.js dashboard running on the real pilot database (414 calls). "
+             "Every page carries the not-investment-advice notice.")
+
+
+def website_drilldown(s):
+    header(s, 9, "Website: Drill-Down & Brief")
+    shot_pair(s, [
+        ("pilot_ba_source_crop.png", "From chart point to source sentence",
+         ["Scored sentences from both models for that call", "The sentence in context, with its speaker",
+          "Every stored model verdict for the sentence"]),
+        ("pilot_ba_brief_crop.png", "Brief for Boeing (Oct 2024 – Apr 2025)",
+         ["Stance and a transparent confidence breakdown", "Bull and bear claims, each citing its source (src chips)",
+          "Cash burn, 777X costs and tariffs surface from real calls"]),
+    ])
+    notes(s, "Drill-down example: Boeing liquidity, Q4 2024 call. The brief uses the latest call plus the one before; "
+             "only claims the Skeptic marks supported appear.")
+
+
+def website_monitoring(s):
+    header(s, 10, "Website: Audit, Monitoring & API")
+    grid = [("pilot_ba_audit_crop.png", "Agent audit trail: Skeptic checks + NLI probabilities"),
+            ("pilot_drift_crop.png", "Drift monitor: quarterly aspect-mix shift (PSI) per company"),
+            ("pilot_models_crop.png", "Model registry: every model, its test scores, which one serves"),
+            ("pilot_api_docs_crop.png", "FastAPI endpoints (interactive docs at /docs)")]
+    for i, (img, cap) in enumerate(grid):
+        col, row = i % 2, i // 2
+        cx, top = 0.45 + col * 4.65 + 4.45 / 2, 1.42 + row * 2.32
+        pic = picture(s, ASSETS / img, 0, top, h=1.88)
+        pic.left = Emu(int(Inches(cx) - pic.width / 2))
+        text(s, 0.45 + col * 4.65, top + 1.92, 4.45, 0.3, [cap], size=11, color=GREY, align=PP_ALIGN.CENTER)
+    notes(s, "Audit trail: every agent step is stored per brief - here the Skeptic's per-claim checks (citation, numbers, "
+             "similarity, overlap, NLI entailment 0.978). Drift is measured per company on quarterly windows.")
 
 
 def pilot(s):
-    header(s, 9, "Real-Data Pilot & Signal Study")
+    header(s, 11, "Real-Data Pilot & Signal Study")
     stats = [("10", "companies, 10 sectors"), ("414", "earnings calls, 2015–2025"), ("206k", "sentences parsed"),
              ("45.7k", "aspect scores")]
     for i, (v, lab) in enumerate(stats):
@@ -470,7 +515,7 @@ def pilot(s):
 
 
 def conclusion(s):
-    header(s, 10, "Conclusion & Future Work")
+    header(s, 12, "Conclusion & Future Work")
     cols = [("Conclusion", [
                 "Aspect-level sentiment and grounded, cited briefs work end-to-end on 414 real earnings calls.",
                 "General lexicons fail on finance (61.5% error on trap sentences); domain models fix most of it.",
@@ -496,7 +541,7 @@ def conclusion(s):
 
 
 def references(s):
-    header(s, 11, "References")
+    header(s, 13, "References")
     refs = [
         "T. Loughran and B. McDonald, “When is a liability not a liability? Textual analysis, dictionaries, and 10-Ks,” J. Finance, 66(1), 2011.",
         "C. J. Hutto and E. Gilbert, “VADER: A parsimonious rule-based model for sentiment analysis of social media text,” ICWSM, 2014.",
@@ -522,20 +567,13 @@ def references(s):
     notes(s, "Full citations and tool versions are in the project repository README and requirements.")
 
 
-def crop_screens():
-    from PIL import Image
-    for src, box_px in (("pilot_ba_trajectories.png", (205, 100, 1835, 955)), ("pilot_ba_brief.png", (205, 100, 1835, 955))):
-        Image.open(ASSETS / src).crop(box_px).save(ASSETS / src.replace(".png", "_crop.png"))
-
-
 def main(base: str):
-    crop_screens()
     prs = Presentation(base)
     slides = list(prs.slides)
     by_file = {sl.part.partname.split("/")[-1]: sl for sl in slides}
     title, thanks = by_file["slide1.xml"], by_file["slide15.xml"]
-    content = [by_file["slide3.xml"]] + [by_file[f"slide{n}.xml"] for n in range(16, 25)]
-    assert len(content) == 10, len(content)
+    content = [by_file["slide3.xml"]] + [by_file[f"slide{n}.xml"] for n in range(16, 27)]
+    assert len(content) == 12, len(content)
 
     # order: title, 10 content slides, thank-you; drop the rest
     keep = [title] + content + [thanks]
@@ -550,7 +588,8 @@ def main(base: str):
             prs.part.drop_rel(el_for_part[sl.part].rId)
 
     title_slide(title)
-    for fn, sl in zip((outline, problem, architecture, pipeline, models, agents, dashboard, pilot, conclusion, references), content):
+    for fn, sl in zip((outline, problem, architecture, pipeline, models, agents, website_overview, website_drilldown,
+                               website_monitoring, pilot, conclusion, references), content):
         fn(sl)
     notes(thanks, "Questions.")
     prs.save(OUT)
