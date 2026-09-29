@@ -8,6 +8,7 @@ export default function TrajectoryChart({
   points, onSelect, selectedId,
 }: { points: TrajPoint[]; onSelect: (p: TrajPoint) => void; selectedId?: number }) {
   if (!points.length) return <div className="muted small" style={{ padding: "40px 0" }}>No scored sentences for this aspect yet.</div>;
+  const labelEvery = Math.max(1, Math.ceil(points.length / 6));
   const x = (i: number) => PAD.l + (points.length === 1 ? (W - PAD.l - PAD.r) / 2 : (i * (W - PAD.l - PAD.r)) / (points.length - 1));
   const y = (v: number) => PAD.t + ((1 - v) / 2) * (H - PAD.t - PAD.b);
   const line = (key: "mean" | "prepared" | "qa") => {
@@ -29,7 +30,12 @@ export default function TrajectoryChart({
         <g key={p.document_id} style={{ cursor: "pointer" }} onClick={() => onSelect(p)}>
           <circle cx={x(i)} cy={y(p.mean)} r={selectedId === p.document_id ? 7 : 5} fill={scoreColor(p.mean)} stroke="var(--card)" strokeWidth="2" />
           <title>{`${p.date} · ${p.doc_type} · mean ${fmt(p.mean)} (n=${p.n})`}</title>
-          <text x={x(i)} y={H - 8} fontSize="9.5" textAnchor="middle" fill="var(--muted)">{p.date.slice(2, 7)}</text>
+          {/* at most ~6 date labels: with years of quarterly calls every label would overlap */}
+          {(i % labelEvery === 0 || i === points.length - 1) && (points.length - 1 - i >= labelEvery / 2 || i === points.length - 1) && (
+            <text x={x(i)} y={H - 8} fontSize="9.5" textAnchor="middle" fill="var(--muted)">
+              {points.length > 8 ? p.date.slice(0, 4) : p.date.slice(2, 7)}
+            </text>
+          )}
         </g>
       ))}
     </svg>
